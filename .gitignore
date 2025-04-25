@@ -1,0 +1,20 @@
+# .gitignore para Cuentix (Python + entorno virtual)
+
+# Entorno virtual
+venv/
+
+# Archivos de configuración personal de VS Code
+.vscode/
+
+# Archivos temporales o de sistema
+__pycache__/
+*.pyc
+*.pyo
+*.log
+*.env
+*.DS_Store
+Thumbs.db
+
+# Salidas de producción
+/assets/
+

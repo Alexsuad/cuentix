@@ -1,9 +1,13 @@
-# main.py
+# backend/main.py
 # Punto de entrada del sistema. Coordina la generación del video cuento completo (texto, imagen, audio, subtítulo y video).
 
 import os
 import sys
 from concurrent.futures import ThreadPoolExecutor
+from dotenv import load_dotenv  # NUEVO
+
+# Cargar variables de entorno
+load_dotenv()
 
 # Añadimos la raíz del proyecto al path
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
@@ -19,6 +23,14 @@ from utils.helpers import generar_id_unico
 from utils.logger import get_logger
 
 logger = get_logger(__name__)
+
+# Rutas dinámicas tomadas del .env
+ASSETS_DIR = os.getenv('ASSETS_DIR', 'assets/')
+VIDEO_DIR = os.getenv('VIDEO_DIR', os.path.join(ASSETS_DIR, 'videos'))
+TEXT_DIR = os.path.join(ASSETS_DIR, 'Text')
+IMAGES_DIR = os.path.join(ASSETS_DIR, 'images')
+AUDIO_DIR = os.path.join(ASSETS_DIR, 'audio')
+SUBTITLES_DIR = os.path.join(ASSETS_DIR, 'subtitles')
 
 def validar_entrada(prompt: str) -> bool:
     """
@@ -36,9 +48,9 @@ def procesar_escena(parrafo: str, image_generator, audio_generator, subtitle_gen
 
     id_escena = generar_id_unico()
 
-    ruta_imagen = f"assets/images/{id_escena}.png"
-    ruta_audio = f"assets/audio/{id_escena}.mp3"
-    ruta_subtitulo = f"assets/subtitles/{id_escena}.srt"
+    ruta_imagen = os.path.join(IMAGES_DIR, f"{id_escena}.png")
+    ruta_audio = os.path.join(AUDIO_DIR, f"{id_escena}.mp3")
+    ruta_subtitulo = os.path.join(SUBTITLES_DIR, f"{id_escena}.srt")
 
     image_generator.generate_image(parrafo, ruta_imagen)
     audio_generator.generate_audio(parrafo, ruta_audio)
@@ -70,9 +82,9 @@ def main():
     if len(cuento_completo.strip().split()) < 30:
         logger.warning("⚠️ El cuento generado parece demasiado corto.")
 
-    os.makedirs("assets/Text", exist_ok=True)
+    os.makedirs(TEXT_DIR, exist_ok=True)
     try:
-        with open("assets/Text/cuento_completo.txt", "w", encoding="utf-8") as f:
+        with open(os.path.join(TEXT_DIR, "cuento_completo.txt"), "w", encoding="utf-8") as f:
             f.write(cuento_completo)
     except Exception as e:
         logger.error(f"❌ Error al guardar el cuento: {e}")
@@ -81,16 +93,19 @@ def main():
     parrafos = cuento_completo.strip().split("\n")
 
     with ThreadPoolExecutor(max_workers=4) as executor:
-        futures = [executor.submit(procesar_escena, p, image_generator, audio_generator, subtitle_generator, video_generator) for p in parrafos if p.strip()]
+        futures = [
+            executor.submit(procesar_escena, p, image_generator, subtitle_generator, audio_generator, video_generator)
+            for p in parrafos if p.strip()
+        ]
         clips = [f.result() for f in futures if f.result() is not None]
 
     if not clips:
         logger.warning("⚠️ No se generaron clips. Revisa si el texto del cuento fue válido.")
         return
 
-    os.makedirs("assets/videos", exist_ok=True)
+    os.makedirs(VIDEO_DIR, exist_ok=True)
     video_final = concatenate_videoclips(clips)
-    video_final.write_videofile("assets/videos/cuento_completo.mp4", fps=24)
+    video_final.write_videofile(os.path.join(VIDEO_DIR, "cuento_completo.mp4"), fps=24)
 
     print("\n✅ ¡Video generado exitosamente!\n")
 

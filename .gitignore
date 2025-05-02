@@ -1,7 +1,7 @@
 # .gitignore para Cuentix (Python + entorno virtual)
 
 # Entorno virtual
-venv/
+backend/venv/
 
 # Archivos de configuración personal de VS Code
 .vscode/

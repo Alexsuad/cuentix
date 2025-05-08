@@ -1,156 +1,248 @@
-/*frontend/assets\css\landing.css
+/* frontend/assets/css/landing.css */
 
-/* ================================
-   Estilos para la página landing
-   ================================ */
+/* =====================================================
+   LANDING PAGE – ESTILOS PRINCIPALES
+   ===================================================== */
 
-/* Contenedor general */
-.landing {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;         /* Alinea parte superior de ambas columnas */
-  padding: 4rem 2rem;              /* Espaciado general */
-  gap: 2rem;                       /* Espacio entre columnas */
-  max-width: 1200px;
-  margin: 0 auto;
+/* ---------- 1. SECCIÓN HERO (3 columnas) --------- */
+.hero-grid {
+  display: grid;
+  grid-template-columns: 30% 40% 14rem;
+  gap: 3rem;
+  padding-block: 6rem; /* espacio vertical alrededor */
+  align-items: center;
+  position: relative;
 }
 
-/* Sección principal tipo hero */
-.hero-section {
-  display: flex;
-  align-items: flex-start;         /* Importante: alinea al tope */
-  justify-content: space-between;
-  padding: 4rem 2rem;
-  gap: 2rem;
-  max-width: 1200px;
-  margin: 0 auto;
-  flex-wrap: wrap;
+/* Ilustración y blob decorativo */
+.hero-illustration {
+  position: relative;
+}
+.hero-blob {
+  position: absolute;
+  top: -2rem;
+  left: -2rem;
+  width: 120%;
+  z-index: -1;
+  opacity: 0.6;
+}
+.hero-main-img {
+  width: 100%;
+  max-width: 320px;
+  display: block;
 }
 
-/* Columna izquierda con texto */
-.hero-left {
-  flex: 1;
-  min-width: 280px;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  margin-top: -7rem;              /* 🔼 Sube TODO el bloque de texto (en lugar de padding-top) */
+/* Copy (texto) */
+.hero-copy {
+  text-align: left;
 }
-
-/* Título principal */
-.hero-left h1 {
-  font-size: 6rem;
-  font-family: 'Baloo 2', cursive;
-  color: var(--clr-text-primary);
-  margin-bottom: 1rem;
-  line-height: 1.0;
+.hero-title {
+  font-family: var(--font-logo);
+  font-size: 4rem;
   font-weight: 800;
+  color: var(--clr-text-primary);
+  margin-bottom: 2rem;
 }
-
-/* Estilo especial para la palabra 'Cuentix' */
-.cuentix {
-  color: var(--clr-accent);        /* Rosa coral #FB7185 */
+.hero-subtitle {
+  font-family: var(--font-logo);
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
 }
-
-/* Texto descriptivo debajo del título */
-.hero-left p {
-  font-size: 1.1rem;
+.lead {
+  font-family: var(--font-primary);
+  font-size: 1.125rem;
   color: var(--clr-text-secondary);
   margin-bottom: 2rem;
-  line-height: 1.6;
-}
-
-/* Botón CTA (llamada a la acción) */
-.hero-left .btn-primary {
-  font-size: 1rem;
-  padding: 0.75rem 1.5rem;
-  background-color: var(--clr-primary);
-  color: white;
-  border-radius: 8px;
-  border: none;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.hero-left .btn-primary:hover {
-  background-color: #8B5CF6;
-}
-
-/* Imagen del personaje principal */
-.hero-right {
-  flex: 1 1 50%;
-  text-align: center;
-  min-width: 300px;
-}
-
-.hero-main-img {
-  max-width: 320px;
-  width: 100%;
-  height: auto;
-  display: block;
-  margin: 0 auto;
 }
 
 /* Miniaturas */
-.miniaturas {
+.hero-thumbs {
   display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 1.2rem;
-  margin-top: 2rem;
-  flex-wrap: wrap;
+  flex-direction: column;
+  gap: 1rem;
+  align-items: flex-end;
 }
-
-.miniaturas img {
-  width: 64px;
-  height: 64px;
-  border-radius: 16px;
+.thumb {
+  width: 96px;
+  height: 96px;
+  border-radius: 1.2rem;
   object-fit: cover;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--shadow-md);
   transition: transform 0.2s ease;
 }
-
-.miniaturas img:hover {
-  transform: scale(1.05);
+.thumb:hover { transform: scale(1.05); }
+.thumb:focus-visible {
+  outline: 2px dashed var(--clr-accent);
+  outline-offset: 2px;
 }
 
-/* ================================
-   Adaptación responsive simple
-   ================================ */
-@media (max-width: 768px) {
-  .hero-section {
-    flex-direction: column;
-    text-align: center;
+/* Responsive Hero */
+@media (max-width: 1199px) {
+  .hero-grid { grid-template-columns: 35% 1fr; }
+  .hero-thumbs {
+    flex-direction: row;
+    justify-content: center;
+    grid-column: 1 / 3;
+    margin-top: 2rem;
+  }
+}
+@media (max-width: 767px) {
+  .hero-grid { grid-template-columns: 1fr; text-align: center; }
+  .hero-illustration, .hero-copy, .hero-thumbs { grid-column: 1; }
+  .hero-thumbs { justify-content: center; }
+  .hero-title { font-size: 2rem; }
+}
+
+/* =====================================================
+   2. SECCIÓN BENEFICIOS + NEWSLETTER (ancho completo)
+   ===================================================== */
+   .section-wrapper-lightblue{
+    position: relative;
+    width: 100vw;
+    left: 50%; margin-left: -50vw;
+    background: var(--clr-blue-light);
+    padding: 8rem 0 0;   /* top 8rem, bottom 0 */
+    overflow: visible;    
   }
 
-  .hero-left, .hero-right {
-    flex: 1 1 100%;
-  }
+.section-wrapper-lightblue > .benefits-grid,
+.section-wrapper-lightblue > .newsletter {
+  position: relative;
+  z-index: 1;
+}
 
-  .hero-left h1 {
-    font-size: 2rem;
-  }
+/* Ola SVG superior */
+.wave-top {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 200px;
+  overflow: hidden;
+  z-index: 0;
+}
+.wave-top svg { display: block; width: 100%; height: 100%; }
 
-  .hero-left p {
-    font-size: 1rem;
-  }
+/* Grid de beneficios */
+.benefits-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
+  gap: var(--space-4);
+  padding: var(--space-5);
+  background: var(--clr-bg-soft);
+  border-radius: var(--radius-lg);
+  margin-block: var(--space-5);
+}
+.benefit {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-1);
+  background: white;
+  padding: 2rem;
+  border-radius: var(--radius-lg);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  min-height: 180px;
+  transition: box-shadow 0.3s ease;
+}
+.benefit:hover { box-shadow: 0 6px 16px rgba(0,0,0,0.08); }
 
-  .miniaturas {
-    gap: 1rem;
-  }
+/* =====================================================
+   ICONOS DE BENEFICIOS – ESTILO CORRECTO Y CENTRADO
+   ===================================================== */
+
+/* 1. Contenedor del ícono (círculo) */
+.benefit-icon {
+  display: inline-block;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  position: relative;      /* permite que ::before se posicione dentro */
+  margin-bottom: 0.5rem;
+}
+
+/* 2. Posicionamiento base del ícono simbólico */
+.benefit-icon::before {
+  content: "";              /* se sobrescribirá en cada icono */
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 1.2rem;
+  color: white;
+  font-weight: bold;
+  line-height: 1; 
+}
+
+/* 3. Icono 1 – Símbolo + */
+.icon-plus {
+  background: var(--clr-success);
+}
+.icon-plus::before {
+  content: "+";              /* texto real que se muestra */
+}
+
+/* 4. Icono 2 – Símbolo ✔ */
+.icon-check {
+  background: var(--clr-info);
+}
+.icon-check::before {
+  content: "✔";
+  font-size: 1rem;
+}
+
+/* 5. Icono 3 – Símbolo 🎨 */
+.icon-palette {
+  background: var(--clr-accent);
+}
+.icon-palette::before {
+  content: "🎨";
+  font-size: 1.1rem;
 }
 
 
-/* Asegura que 'a Cuentix' se mantenga en la misma línea */
-.cuentix-line {
-  white-space: nowrap;
+/* =====================================================
+   3. NEWSLETTER BLOQUE (dentro del section-lightblue)
+   ===================================================== */
+.newsletter {
+  background-color: #0EA5E9;
+  padding: var(--space-5);
+  color: white;
+  text-align: center;
+  border-radius: 2rem;
+  margin-block: var(--space-5);
 }
-
-.cuentix {
-  color: var(--clr-accent);
+.newsletter-inner {
+  max-width: 640px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  align-items: center;
 }
-
-.hero-title .cuentix {
-  color: var(--clr-accent) !important; /* Asegurar especificidad */
+.newsletter-title {
+  font-family: var(--font-logo);
+  font-size: 2rem;
+  font-weight: 800;
+}
+.newsletter-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center;
+  margin-bottom: 2rem;
+}
+.newsletter-form input {
+  padding: 0.75rem 1rem;
+  border-radius: 9999px;
+  border: none;
+  width: 280px;
+  font-size: 1rem;
+}
+.btn-newsletter {
+  background-color: #FACC15;
+  color: var(--clr-text-primary);
+  font-weight: 700;
+  padding: 0.75rem 2rem;
+  border: none;
+  border-radius: 9999px;
+  cursor: pointer;
 }

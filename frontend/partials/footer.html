@@ -1,9 +1,24 @@
 <!-- frontend/partials/footer.html -->
 
-<footer class="main-footer">
+<!-- =====================================================
+     FOOTER PARTIAL – ESTRUCTURA DEL PIE DE PÁGINA
+     ===================================================== -->
+
+<!-- 1. Ola decorativa superior (SVG) -->
+<div class="footer-wave" aria-hidden="true">
+  <svg viewBox="0 0 1440 80" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+    <!-- Curva orgánica con fill pastel #E0F2FE -->
+    <path fill="#E0F2FE" d="M0,0 C480,80 960,0 1440,80 L1440,0 L0,0 Z"></path>
+  </svg>
+</div>
+
+<!-- 2. Contenedor principal del footer -->
+<footer class="footer">
   <div class="container">
+    <!-- 2.1 Columnas con enlaces e información -->
     <div class="footer-columns">
-      <!-- Enlaces rápidos -->
+
+      <!-- 2.1.1 Enlaces rápidos -->
       <div class="footer-col">
         <h4>Enlaces rápidos</h4>
         <a href="/pages/landing.html">Inicio</a>
@@ -11,27 +26,30 @@
         <a href="/pages/faq.html">FAQ</a>
       </div>
 
-      <!-- Contacto -->
+      <!-- 2.1.2 Contacto -->
       <div class="footer-col">
         <h4>Contacto</h4>
         <p>123-456-7890</p>
         <p>info@cuentix.com</p>
       </div>
 
-      <!-- Redes sociales -->
+      <!-- 2.1.3 Redes sociales -->
       <div class="footer-col">
         <h4>Síguenos</h4>
         <div class="social-icons">
-          <a href="#"><i class="bi bi-facebook"></i></a>
-          <a href="#"><i class="bi bi-instagram"></i></a>
+          <a href="#" aria-label="Facebook"><i class="bi bi-facebook"></i></a>
+          <a href="#" aria-label="Instagram"><i class="bi bi-instagram"></i></a>
         </div>
       </div>
-    </div>
 
-    <!-- Aviso legal -->
-    <div class="legal">
-      <span><a href="#">Términos</a> | <a href="#">Privacidad</a></span>
-      <p>© 2025 Cuentix. Todos los derechos reservados</p>
     </div>
+  </div>
+
+  <!-- 3. Aviso legal con fondo oscuro y separación superior -->
+  <div class="legal">
+    <span>
+      <a href="#">Términos</a> | <a href="#">Privacidad</a>
+    </span>
+    <p>© 2025 Cuentix. Todos los derechos reservados</p>
   </div>
 </footer>

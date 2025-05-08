@@ -1,67 +1,106 @@
 <!-- frontend/pages/landing.html -->
-<!-- frontend/pages/landing.html -->
 <!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Cuentix - Bienvenido</title>
+
+  <!-- Meta & estilos globales -->
   <meta name="description" content="Cuentix: Crea video cuentos mágicos y personalizados para niños y niñas con IA.">
   <link rel="stylesheet" href="../assets/css/main.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;700;800&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+
+  <!-- Íconos (Bootstrap-Icons) -->
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 </head>
+
 <body>
 
-  <!-- Header cargado como partial -->
+  <!-- =========== HEADER (cargado por JS) =========== -->
   <div id="header-placeholder"></div>
 
+  <!-- =========== CONTENIDO PRINCIPAL =============== -->
   <main class="container">
-    <!-- HERO SECTION -->
-    <section class="hero-section">
-      <div class="hero-left">
 
-        <h1 class="hero-title">
-          Bienvenidos a<br>
-          <span class="cuentix">Cuentix</span>
-        </h1>
+    <!-- ============= HERO =========================== -->
+    <section class="hero-grid">
 
-        <p class="text-muted">Crea video cuentos mágicos y personalizados para tus hijos con ayuda de la inteligencia artificial.</p>
-        <a href="/pages/register.html" class="btn btn-primary">Crear cuenta gratis</a>
+      <!-- 1 · Ilustración -->
+      <div class="hero-illustration">
+        <img src="../assets/img/landing/blob-hero.svg" aria-hidden="true" class="hero-blob" alt="">
+        <img src="../assets/img/landing/nino-leyendo.png" alt="Niño leyendo un libro verde" class="hero-main-img">
       </div>
-      <div class="hero-right">
-        <img src="../assets/img/landing/nino-leyendo.png" alt="Niño leyendo cuento" class="hero-main-img" />
-        <div class="miniaturas">
-          <img src="../assets/img/landing/thumb1.png" alt="Miniatura 1" />
-          <img src="../assets/img/landing/thumb2.png" alt="Miniatura 2" />
-          <img src="../assets/img/landing/thumb3.png" alt="Miniatura 3" />
-          <img src="../assets/img/landing/thumb4.png" alt="Miniatura 4" />
+
+      <!-- 2 · Texto -->
+      <div class="hero-copy">
+        <h1 class="hero-title">¡Dale vida a la imaginación!</h1>
+        <h2 class="hero-subtitle">Cuentos únicos creados por IA, para mentes curiosas.</h2>
+        <p class="lead">Descubre historias hechas a la medida para cada niño.</p>
+        <a class="btn btn-primary" href="/pages/register.html">Crear cuenta gratis</a>
+      </div>
+
+      <!-- 3 · Miniaturas -->
+      <div class="hero-thumbs" aria-label="Ejemplos de cuentos">
+        <img src="../assets/img/landing/thumb1.png" alt="Astronauta soñador" class="thumb">
+        <img src="../assets/img/landing/thumb2.png" alt="Niña y dinosaurio" class="thumb">
+        <img src="../assets/img/landing/thumb3.png" alt="Niño celebrando" class="thumb">
+        <img src="../assets/img/landing/thumb4.png" alt="Mago infantil" class="thumb">
+      </div>
+
+    </section>
+
+    <!-- ============= BENEFICIOS + NEWSLETTER ======= -->
+    <section class="section-wrapper-lightblue">
+
+      <!-- Ola decorativa -->
+      <div class="wave-top" aria-hidden="true">
+        <svg viewBox="0 0 1440 320" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+          <path fill="#E0F2FE" d="M0,0 C480,160 960,0 1440,160 L1440,320 L0,320 Z"></path>
+        </svg>
+      </div>
+
+      <!-- Grid de beneficios -->
+      <div class="benefits-grid">
+        <article class="benefit">
+          <span class="benefit-icon icon-plus" aria-hidden="true"></span>
+          <h4>+150 historias</h4>
+          <p class="small">generadas cada semana</p>
+        </article>
+
+        <article class="benefit">
+          <span class="benefit-icon icon-check" aria-hidden="true"></span>
+          <h4>Cuentos creados por IA</h4>
+          <p class="small">según los gustos de cada niño</p>
+        </article>
+
+        <article class="benefit">
+          <span class="benefit-icon icon-palette" aria-hidden="true"></span>
+          <h4>Estilo visual atractivo</h4>
+          <p class="small">y narración personalizable</p>
+        </article>
+      </div>
+
+      <!-- Newsletter -->
+      <div class="newsletter">
+        <div class="newsletter-inner">
+          <h3 class="newsletter-title">¿Quieres recibir novedades?</h3>
+          <form class="newsletter-form">
+            <input type="email" placeholder="Ingresa tu correo electrónico" required>
+            <button type="submit" class="btn-newsletter">Suscribirse</button>
+          </form>
         </div>
       </div>
-    </section>
 
-    <!-- INTRO SECTION -->
-    <section class="intro text-center">
-      <h2 class="font-logo">¡Dale vida a la imaginación!</h2>
-      <h3 class="subtitle">Cuentos únicos creados por IA, para mentes curiosas.</h3>
-      <p class="text-muted">Descubre historias hechas a la medida para cada niño.</p>
-      <a href="/pages/register.html" class="btn btn-secondary cta-btn">Regístrate gratis</a>
-    </section>
+    </section> <!-- /section-wrapper-lightblue -->
 
-    <!-- BENEFITS -->
-    <section class="benefits">
-      <ul>
-        <li><strong>+150</strong> historias generadas cada semana</li>
-        <li>Cuentos creados por IA con base en gustos reales</li>
-        <li>Diseñado para familias modernas</li>
-        <li>Estilo visual y narrativo totalmente personalizable</li>
-      </ul>
-    </section>
   </main>
 
-  <!-- Footer cargado como partial -->
-  <div id="footer-placeholder" style="margin-top: 80px;"></div>
+  <!-- =========== FOOTER (se insertará vía JS) ====== -->
+  <div id="footer-placeholder"></div>
 
-  <!-- JS principal como módulo -->
+  <!-- =========== JS PRINCIPAL ====================== -->
   <script type="module" src="../assets/js/main.js"></script>
+
 </body>
 </html>

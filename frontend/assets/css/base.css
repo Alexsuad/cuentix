@@ -1,143 +1,162 @@
 /* frontend/assets/css/base.css
-/* ====================================================================== */
-/* frontend/assets/css/base.css - Estilos base globales para Cuentix      */
-/* Versión 3.0 - Variables optimizadas y accesibilidad mejorada          */
-/* ====================================================================== */
+   =====================================================================
+   BASE.CSS – ESTILOS GLOBALES PARA CUENTIX
+   Versión 3.0 – Variables optimizadas y accesibilidad mejorada
+   ===================================================================== */
 
-:root {
-  /* ========== PALETA DE COLORES ========== */
-  --clr-primary: #a78bfa;       /* Lila principal (Botones/Enlaces) */
-  --clr-primary-dark: #8b5cf6;  /* Lila oscuro (Hover/Active) */
-  --clr-accent: #fb7185;        /* Rosa coral (Destacados) */
-  --clr-accent-dark: #f43f5e;   /* Rosa oscuro (Hover/Active) */
+/* =====================================================================
+   1) VARIABLES CSS GLOBALES
+   ===================================================================== */
+   :root {
+    /* ===== PALETA DE COLORES ===== */
+    --clr-primary: #a78bfa;         /* primario (botones/enlaces) */
+    --clr-primary-dark: #8b5cf6;    /* hover primario */
+    --clr-accent: #fb7185;          /* rosa coral (destacados) */
+    --clr-accent-dark: #f43f5e;     /* hover accent */
   
-  /* ========== TONOS NEUTRALES ========== */
-  --clr-text-primary: #1e293b;  /* Texto principal */
-  --clr-text-secondary: #64748b;/* Texto secundario */
-  --clr-bg-main: #ffffff;       /* Fondo principal */
-  --clr-bg-soft: #f8fafc;       /* Fondos suaves */
-  --clr-border: #e2e8f0;        /* Bordes */
-
-  /* ========== ESTADO/ALERTAS ========== */
-  --clr-success: #22c55e;       /* Éxito */
-  --clr-warning: #f59e0b;       /* Advertencia */
-  --clr-error: #ef4444;         /* Error */
-  --clr-info: #0ea5e9;          /* Información */
-
-  /* ========== TIPOGRAFÍA ========== */
-  --font-primary: 'Poppins', sans-serif;
-  --font-logo: 'Baloo 2', cursive;
-
-  /* ========== SOMBRAS ========== */
-  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
-  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
-  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
-
-  /* ========== BORDES ========== */
-  --radius-sm: 0.25rem;         /* 4px */
-  --radius-md: 0.5rem;          /* 8px */
-  --radius-lg: 0.75rem;         /* 12px */
-
-  /* ========== TRANSICIONES ========== */
-  --transition-fast: 0.15s ease-in-out;
-  --transition-std: 0.3s ease-in-out;
-
-  /* ========== SOBRESCRITURA BOOTSTRAP ========== */
-  --bs-primary: var(--clr-primary);
-  --bs-primary-rgb: 167, 139, 250;
-  --bs-link-color: var(--clr-primary);
-  --bs-link-hover-color: var(--clr-primary-dark);
-}
-
-/* ========== RESET MEJORADO ========== */
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-  border: 0;
-  font: inherit;
-  vertical-align: baseline;
-}
-
-html {
-  scroll-behavior: smooth;
-  scroll-padding-top: 5rem;     /* Espacio para navbar fija */
-  font-size: 16px;
-}
-
-body {
-  font-family: var(--font-primary);
-  line-height: 1.6;
-  color: var(--clr-text-primary);
-  background-color: var(--clr-bg-main);
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-}
-
-/* ========== JERARQUÍA TIPOGRÁFICA ========== */
-h1, h2, h3, h4, h5, h6 {
-  font-family: var(--font-logo);
-  font-weight: 700;
-  line-height: 1.2;
-  margin-bottom: 1rem;
-}
-
-h1 { font-size: 3.052rem; }
-h2 { font-size: 2.441rem; }
-h3 { font-size: 1.953rem; }
-h4 { font-size: 1.563rem; }
-h5 { font-size: 1.25rem; }
-
-/* ========== ELEMENTOS INTERACTIVOS ========== */
-a {
-  color: var(--bs-link-color);
-  text-decoration: none;
-  transition: color var(--transition-fast);
+    /* ===== TONOS NEUTRALES ===== */
+    --clr-text-primary: #1e293b;    /* texto principal */
+    --clr-text-secondary: #64748b;  /* texto secundario */
+    --clr-bg-main: #ffffff;         /* fondo principal */
+    --clr-bg-soft: #f8fafc;         /* fondos suaves */
+    --clr-border: #e2e8f0;          /* bordes */
   
-  &:hover {
+    /* ===== ESTADOS/ALERTAS ===== */
+    --clr-success: #22c55e;
+    --clr-warning: #f59e0b;
+    --clr-error:   #ef4444;
+    --clr-info:    #0ea5e9;
+  
+    /* ===== TIPOGRAFÍA ===== */
+    --font-primary: 'Poppins', sans-serif;
+    --font-logo:    'Baloo 2', cursive;
+  
+    /* ===== SOMBRAS ===== */
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
+    --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+    --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+  
+    /* ===== RADIOS ===== */
+    --radius-sm: 0.25rem;
+    --radius-md: 0.5rem;
+    --radius-lg: 0.75rem;
+  
+    /* ===== TRANSICIONES ===== */
+    --transition-fast: 0.15s ease-in-out;
+    --transition-std:  0.3s ease-in-out;
+  
+    /* ===== SOBREESCRITURA BOOTSTRAP ===== */
+    --bs-primary:       var(--clr-primary);
+    --bs-primary-rgb:   167, 139, 250;
+    --bs-link-color:    var(--clr-primary);
+    --bs-link-hover-color: var(--clr-primary-dark);
+    --clr-blue-light: #E0F2FE;
+
+      /* ===  NUEVAS UTILIDADES  === */
+    --clr-blue-light: #E0F2FE; /* azul pastel del fondo grande   */
+    --space-4: 2rem;           /* ≈ 32 px – separaciones medianas */
+    --space-5: 4rem;           /* ≈ 64 px – separaciones grandes  */
+  }
+  
+  /* =====================================================================
+     2) RESET GLOBAL MEJORADO
+     ===================================================================== */
+  *, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font: inherit;
+    vertical-align: baseline;
+  }
+  
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 5rem;   /* espacio para navbar fija */
+    font-size: 16px;
+  }
+  
+  body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  
+    font-family: var(--font-primary);
+    line-height: 1.6;
+    color: var(--clr-text-primary);
+    background-color: var(--clr-bg-main);
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+  }
+  
+  /* =====================================================================
+     3) JERARQUÍA TIPOGRÁFICA
+     ===================================================================== */
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-logo);
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: 1rem;
+  }
+  h1 { font-size: 3.052rem; }
+  h2 { font-size: 2.441rem; }
+  h3 { font-size: 1.953rem; }
+  h4 { font-size: 1.563rem; }
+  h5 { font-size: 1.25rem; }
+  
+  /* =====================================================================
+     4) ELEMENTOS INTERACTIVOS
+     ===================================================================== */
+  a {
+    color: var(--bs-link-color);
+    text-decoration: none;
+    transition: color var(--transition-fast);
+  }
+  a:hover {
     color: var(--bs-link-hover-color);
     text-decoration: underline;
   }
-}
-
-button {
-  cursor: pointer;
-  transition: 
-    background-color var(--transition-fast),
-    transform var(--transition-fast);
-}
-
-:focus-visible {
-  outline: 2px solid var(--clr-accent);
-  outline-offset: 0.25rem;
-  border-radius: var(--radius-sm);
-}
-
-/* ========== UTILIDADES GLOBALES ========== */
-.text-accent {
-  color: var(--clr-accent) !important;
-}
-
-.bg-highlight {
-  background-color: var(--clr-bg-soft);
-  padding: 1.5rem;
-  border-radius: var(--radius-md);
-}
-
-.container {
-  width: 100%;
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 0 1rem;
-}
-
-@media (min-width: 1536px) {
-  .container {
-    max-width: 1536px;
+  
+  button {
+    cursor: pointer;
+    transition:
+      background-color var(--transition-fast),
+      transform var(--transition-fast);
   }
-}
+  
+  :focus-visible {
+    outline: 2px solid var(--clr-accent);
+    outline-offset: 0.25rem;
+    border-radius: var(--radius-sm);
+  }
+  
+  /* =====================================================================
+     5) UTILIDADES GLOBALES
+     ===================================================================== */
+  .text-accent {
+    color: var(--clr-accent) !important;
+  }
+  
+  .bg-highlight {
+    background-color: var(--clr-bg-soft);
+    padding: 1.5rem;
+    border-radius: var(--radius-md);
+  }
+  
+  .container {
+    width: 100%;
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 1rem;
+  }
+  @media (min-width: 1536px) {
+    .container {
+      max-width: 1536px;
+    }
+  }
+  
+  /* Texto pequeño secundario */
+  .small {
+    font-size: 0.9rem;
+    color: var(--clr-text-secondary);
+  }

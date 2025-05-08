@@ -1,20 +1,47 @@
-# .gitignore para Cuentix (Python + entorno virtual)
-
-# Entorno virtual
-backend/venv/
-
-# Archivos de configuración personal de VS Code
+# === Entornos Virtuales y Configuraciones de Editor ===
 .vscode/
+backend/venv/
+frontend/venv/
 
-# Archivos temporales o de sistema
+# === Caché y archivos temporales de Python ===
 __pycache__/
-*.pyc
+*.py[cod]
 *.pyo
-*.log
-*.env
+
+# === Archivos ocultos o innecesarios del sistema ===
 *.DS_Store
 Thumbs.db
+*.log
+*.env
+*.swp
+*.bak
+*.tmp
+*.Zone.Identifier
+*.zone.identifier
 
-# Salidas de producción
-/assets/
+# === Cachés de pruebas y notebooks ===
+.pytest_cache/
+.ipynb_checkpoints/
 
+# === Salidas de producción o compilación (opcional) ===
+/dist/
+/build/
+
+# === Archivos binarios o multimedia temporales ===
+*.mp3
+*.wav
+*.zip
+*.tar.gz
+
+# === Assets generados automáticamente (si se aplican) ===
+# Descomentar si usas bundlers que generen contenido
+# /frontend/assets/css/*.min.css
+# /frontend/assets/js/*.min.js
+
+# === Asegurar que tus assets reales NO se ignoren ===
+!frontend/assets/
+!frontend/assets/css/
+!frontend/assets/js/
+!frontend/assets/img/
+!frontend/assets/js/**/*.js
+!frontend/assets/css/**/*.css

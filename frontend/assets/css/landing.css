@@ -1,0 +1,156 @@
+/*frontend/assets\css\landing.css
+
+/* ================================
+   Estilos para la página landing
+   ================================ */
+
+/* Contenedor general */
+.landing {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;         /* Alinea parte superior de ambas columnas */
+  padding: 4rem 2rem;              /* Espaciado general */
+  gap: 2rem;                       /* Espacio entre columnas */
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Sección principal tipo hero */
+.hero-section {
+  display: flex;
+  align-items: flex-start;         /* Importante: alinea al tope */
+  justify-content: space-between;
+  padding: 4rem 2rem;
+  gap: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  flex-wrap: wrap;
+}
+
+/* Columna izquierda con texto */
+.hero-left {
+  flex: 1;
+  min-width: 280px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  margin-top: -7rem;              /* 🔼 Sube TODO el bloque de texto (en lugar de padding-top) */
+}
+
+/* Título principal */
+.hero-left h1 {
+  font-size: 6rem;
+  font-family: 'Baloo 2', cursive;
+  color: var(--clr-text-primary);
+  margin-bottom: 1rem;
+  line-height: 1.0;
+  font-weight: 800;
+}
+
+/* Estilo especial para la palabra 'Cuentix' */
+.cuentix {
+  color: var(--clr-accent);        /* Rosa coral #FB7185 */
+}
+
+/* Texto descriptivo debajo del título */
+.hero-left p {
+  font-size: 1.1rem;
+  color: var(--clr-text-secondary);
+  margin-bottom: 2rem;
+  line-height: 1.6;
+}
+
+/* Botón CTA (llamada a la acción) */
+.hero-left .btn-primary {
+  font-size: 1rem;
+  padding: 0.75rem 1.5rem;
+  background-color: var(--clr-primary);
+  color: white;
+  border-radius: 8px;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.hero-left .btn-primary:hover {
+  background-color: #8B5CF6;
+}
+
+/* Imagen del personaje principal */
+.hero-right {
+  flex: 1 1 50%;
+  text-align: center;
+  min-width: 300px;
+}
+
+.hero-main-img {
+  max-width: 320px;
+  width: 100%;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+}
+
+/* Miniaturas */
+.miniaturas {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1.2rem;
+  margin-top: 2rem;
+  flex-wrap: wrap;
+}
+
+.miniaturas img {
+  width: 64px;
+  height: 64px;
+  border-radius: 16px;
+  object-fit: cover;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease;
+}
+
+.miniaturas img:hover {
+  transform: scale(1.05);
+}
+
+/* ================================
+   Adaptación responsive simple
+   ================================ */
+@media (max-width: 768px) {
+  .hero-section {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .hero-left, .hero-right {
+    flex: 1 1 100%;
+  }
+
+  .hero-left h1 {
+    font-size: 2rem;
+  }
+
+  .hero-left p {
+    font-size: 1rem;
+  }
+
+  .miniaturas {
+    gap: 1rem;
+  }
+}
+
+
+/* Asegura que 'a Cuentix' se mantenga en la misma línea */
+.cuentix-line {
+  white-space: nowrap;
+}
+
+.cuentix {
+  color: var(--clr-accent);
+}
+
+.hero-title .cuentix {
+  color: var(--clr-accent) !important; /* Asegurar especificidad */
+}

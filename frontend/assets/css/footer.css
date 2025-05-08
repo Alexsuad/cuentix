@@ -1,0 +1,25 @@
+/*frontend\assets\css\footer.css
+/* footer.css – Estilos del pie de página */
+.footer {
+  background-color: var(--clr-bg-highlight);
+  padding: 2rem 0;
+  color: var(--clr-text-primary);
+  font-size: 0.9rem;
+}
+.footer a {
+  color: var(--clr-text-primary);
+  text-decoration: none;
+  margin: 0 0.75rem;
+}
+.footer a:hover {
+  text-decoration: underline;
+}
+.footer-links {
+  list-style: none;
+  padding: 0;
+  margin-top: 1rem;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}

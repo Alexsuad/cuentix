@@ -1,0 +1,49 @@
+<!-- frontend\pages\login.html -->
+ 
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Iniciar Sesión - Cuentix</title>
+  <!-- Aquí puedes enlazar Tailwind CSS o un archivo CSS propio -->
+  <link rel="stylesheet" href="../assets/css/styles.css" />
+</head>
+<body>
+  <main class="login-container">
+    <section class="login-box">
+      <h1 class="login-title">Iniciar Sesión</h1>
+      <form id="loginForm" class="login-form">
+        <!-- Campo de correo -->
+        <label for="email">Correo electrónico</label>
+        <input
+          type="email"
+          id="email"
+          name="email"
+          placeholder="ejemplo@cuentix.com"
+          required
+        />
+
+        <!-- Campo de contraseña -->
+        <label for="password">Contraseña</label>
+        <input
+          type="password"
+          id="password"
+          name="password"
+          placeholder="••••••••"
+          required
+        />
+
+        <!-- Botón de envío -->
+        <button type="submit">Entrar</button>
+      </form>
+
+      <!-- Área para mostrar errores -->
+      <div id="errorMessage" class="error-message" style="display: none;"></div>
+    </section>
+  </main>
+
+  <!-- Módulo específico de la página -->
+  <script type="module" src="../assets/js/modules/pages/login.js"></script>
+</body>
+</html>

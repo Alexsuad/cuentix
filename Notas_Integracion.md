@@ -154,3 +154,17 @@ Impacto en Frontend:
 
 - En `result.html`, usar este endpoint para cargar el video en un elemento `<video>` o permitir la descarga.
 - Mostrar un mensaje adecuado si el archivo aún no está disponible o hay un error.
+
+## 05/05/2025 - Actualización de .gitignore para Frontend y Backend
+
+- Se actualizó el archivo `.gitignore` para ignorar archivos innecesarios del sistema y de desarrollo (como `.DS_Store`, `.Zone.Identifier`, `*.log`, etc.).
+- Se añadieron reglas específicas para evitar ignorar por error los assets reales del Frontend.
+- Se consolidaron rutas de entorno virtual para evitar duplicación (`backend/venv/`, `frontend/venv/`).
+
+Impacto en Backend:
+
+- Ninguno directo, pero si en algún momento se comparten assets generados (por ejemplo, thumbnails o audios procesados), deben incluirse explícitamente con excepciones `!`.
+
+Nota para ambos equipos:
+
+- Si se generan archivos temporales, cacheados o multimedia que **no deben subirse al repositorio**, asegúrate de añadir su patrón al `.gitignore`.

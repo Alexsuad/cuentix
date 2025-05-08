@@ -1,0 +1,18 @@
+/// archivo: frontend/assets/css/layout.css
+/* ====================================================================== */
+/* frontend/assets/css/layout.css - Estilos para la estructura general    */
+/* Contiene reglas de layout personalizadas no cubiertas por Bootstrap.   */
+/* ====================================================================== */
+
+/* Nota: Las clases .container, .text-center, .text-muted, etc. se gestionan */
+/* directamente usando las clases de Bootstrap en el HTML.                  */
+/* Este archivo se utiliza para reglas de layout más específicas o combinaciones */
+/* que no son utilidades básicas.                                         */
+
+/* Ejemplo de una regla de layout custom que podría ir aquí en el futuro: */
+/* .section-spacing {
+    padding-top: var(--space-lg);
+    padding-bottom: var(--space-lg);
+} */
+
+/* Fin de frontend/assets/css/layout.css */

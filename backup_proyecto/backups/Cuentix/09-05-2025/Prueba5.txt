@@ -1,0 +1,16 @@
+🗓 Fecha y hora: 09/05/2025 21:52:59
+📁 Proyecto activo: Cuentix
+📦 Archivo ZIP: Prueba5_20250509_215254.zip
+📂 Archivos incluidos (10):
+- frontend/pages/dashboard.html
+- frontend/pages/login.html
+- frontend/pages/register.html
+- frontend/pages/landing.html
+- frontend/pages/result.html
+- frontend/pages/history.html
+- frontend/pages/loading.html
+- frontend/pages/profile-new.html
+- frontend/pages/wizard.html
+- frontend/pages/frontend/assets/img/landing/nino-leyendo.png
+🔗 Subido a Git: No
+🧠 Backup generado por zip_autobackup_v4.py · OpenAI + Alex

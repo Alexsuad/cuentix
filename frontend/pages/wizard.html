@@ -1,0 +1,94 @@
+<!-- File: frontend/pages/wizard.html -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Crear Videocuento - Cuentix</title>
+
+  <!-- Estilos base -->
+  <link rel="stylesheet" href="../assets/css/main.css" />
+</head>
+
+<body>
+
+  <!-- Header (cargado dinámicamente) -->
+  <div id="header-placeholder"></div>
+
+  <main class="container">
+    <section class="wizard-section">
+      <h1>🧙‍♂️ Crea tu video cuento mágico</h1>
+      <p class="small">Selecciona una opción en cada paso. Tu historia será única.</p>
+
+      <!-- Paso a paso (placeholder visual) -->
+      <div class="wizard-steps">
+        <!-- Paso 1: personaje principal -->
+        <div class="wizard-step" data-step="1">
+          <h2>1. ¿Quién será el personaje principal?</h2>
+          <div class="wizard-options">
+            <button class="btn btn-secondary">Una niña aventurera</button>
+            <button class="btn btn-secondary">Un dragón curioso</button>
+            <button class="btn btn-secondary">Un robot inventor</button>
+          </div>
+        </div>
+
+        <!-- Paso 2: lugar mágico -->
+        <div class="wizard-step" data-step="2" style="display: none;">
+          <h2>2. ¿Dónde ocurrirá la historia?</h2>
+          <div class="wizard-options">
+            <button class="btn btn-secondary">En el espacio</button>
+            <button class="btn btn-secondary">En una selva mágica</button>
+            <button class="btn btn-secondary">Bajo el mar</button>
+          </div>
+        </div>
+
+        <!-- Paso 3: objeto mágico -->
+        <div class="wizard-step" data-step="3" style="display: none;">
+          <h2>3. Elige un objeto mágico</h2>
+          <div class="wizard-options">
+            <button class="btn btn-secondary">Una varita parlante</button>
+            <button class="btn btn-secondary">Un sombrero volador</button>
+            <button class="btn btn-secondary">Una piedra del tiempo</button>
+          </div>
+        </div>
+
+        <!-- Paso 4: el villano -->
+        <div class="wizard-step" data-step="4" style="display: none;">
+          <h2>4. ¿Quién será el villano?</h2>
+          <div class="wizard-options">
+            <button class="btn btn-secondary">Un pulpo gigante</button>
+            <button class="btn btn-secondary">Un mago oscuro</button>
+            <button class="btn btn-secondary">Una IA traviesa</button>
+          </div>
+        </div>
+
+        <!-- Paso 5: tipo de final -->
+        <div class="wizard-step" data-step="5" style="display: none;">
+          <h2>5. ¿Cómo quieres que termine?</h2>
+          <div class="wizard-options">
+            <button class="btn btn-secondary">Final feliz</button>
+            <button class="btn btn-secondary">Final gracioso</button>
+            <button class="btn btn-secondary">Final inesperado</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Barra de progreso -->
+      <div class="progress-bar-container">
+        <div class="progress-bar" id="wizard-progress" style="width: 20%;"></div>
+      </div>
+
+      <!-- Botón para continuar -->
+      <div class="wizard-actions">
+        <button class="btn btn-primary" id="wizard-next">Siguiente</button>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer (cargado dinámicamente) -->
+  <div id="footer-placeholder"></div>
+
+  <!-- Script principal -->
+  <script type="module" src="../assets/js/main.js"></script>
+</body>
+</html>

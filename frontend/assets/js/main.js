@@ -1,33 +1,14 @@
 // frontend/assets/js/main.js
 // Punto de entrada principal del Frontend de Cuentix
 
-/* ----------------------------------------------------------
-   1) Detecta el nombre de la página actual (landing, login…)
------------------------------------------------------------ */
+import { loadPartials } from './utils/loadPartials.js';  // ⬅️ importamos ahora como módulo
+
 function getCurrentPageName() {
   const path = window.location.pathname;
   const filename = path.substring(path.lastIndexOf("/") + 1);
   return filename.replace(".html", "");
 }
 
-/* ----------------------------------------------------------
-   2) Carga parcial(es) comunes (footer, header…)
------------------------------------------------------------ */
-async function loadPartials() {
-  const footerContainer = document.getElementById("footer-placeholder");
-  if (footerContainer) {
-    try {
-      const html = await fetch("/partials/footer.html").then(r => r.text());
-      footerContainer.innerHTML = html;
-    } catch (err) {
-      console.error("[main.js] No se pudo cargar footer.html:", err);
-    }
-  }
-}
-
-/* ----------------------------------------------------------
-   3) Importa dinámicamente el módulo JS específico de la página
------------------------------------------------------------ */
 async function initPage() {
   const page = getCurrentPageName();
   try {
@@ -42,10 +23,7 @@ async function initPage() {
   }
 }
 
-/* ----------------------------------------------------------
-   4) Cuando el DOM esté listo
------------------------------------------------------------ */
 document.addEventListener("DOMContentLoaded", async () => {
-  await loadPartials(); // ① Inserta footer (y header si añades otro fetch)
-  initPage();           // ② Luego lógica particular de la página
+  await loadPartials();  // ⬅️ ahora es importado, no declarado aquí
+  await initPage();
 });

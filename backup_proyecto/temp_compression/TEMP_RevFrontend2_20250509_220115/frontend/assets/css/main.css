@@ -1,0 +1,8 @@
+/*frontend\assets\css\main.css
+/* main.css – Importa todos los módulos CSS */
+@import url('base.css');
+@import url('layout.css');
+@import url('header.css');
+@import url('footer.css');
+@import url('buttons.css');
+@import url('landing.css');

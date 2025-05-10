@@ -1,0 +1,43 @@
+<!-- File: frontend/pages/result.html -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tu video cuento está listo - Cuentix</title>
+  <link rel="stylesheet" href="../assets/css/main.css" />
+</head>
+
+<body>
+
+  <!-- Header dinámico -->
+  <div id="header-placeholder"></div>
+
+  <main class="container">
+    <section class="result-section">
+      <h1>🎉 ¡Tu cuento mágico ya está listo!</h1>
+      <p class="small">Disfrútalo a continuación o compártelo con alguien especial.</p>
+
+      <!-- Video generado -->
+      <div class="video-container">
+        <video id="cuento-video" width="100%" controls poster="../assets/img/placeholder.jpg">
+          Tu navegador no soporta el elemento <code>video</code>.
+        </video>
+      </div>
+
+      <!-- Botón de descarga -->
+      <div class="result-actions">
+        <a id="descargar-btn" class="btn btn-primary" href="#" download>
+          Descargar video
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer dinámico -->
+  <div id="footer-placeholder"></div>
+
+  <!-- Script principal -->
+  <script type="module" src="../assets/js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,97 @@
+/* frontend/assets/css/footer.css
+   =====================================================
+   FOOTER.CSS – ESTILOS DEL PIE DE PÁGINA (PARCIAL)
+   ===================================================== */
+
+/* 1. Contenedor principal del footer: ocupa posición relativa para la ola */
+.footer {
+  /* Espacios: ola SVG arrastrada arriba, contenido debajo */
+  padding: 0;
+  position: relative;  /* posiciona .footer-wave dentro */
+  color: white;
+  font-size: 0.9rem;
+}
+
+/* 2. Enlaces generales del footer */
+.footer a {
+  color: var(--clr-text-primary);
+  text-decoration: none;
+  margin: 0 0.75rem;
+}
+.footer a:hover {
+  text-decoration: underline;
+}
+
+/* 3. OLA DECORATIVA: SVG que aparece encima del footer */
+.footer-wave {
+  position: absolute;
+  top: -80px;
+  left: 0;
+  width: 100%;         /* ocupa todo el ancho del viewport */
+  overflow: hidden;
+  line-height: 0;
+  z-index: 0;
+}
+.footer-wave svg {
+  display: block;
+  width: 100%;
+  height: 80px;       /* altura de la ola */
+}
+
+/* 4. Columnas internas: grid responsivo */
+.footer-columns {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: var(--space-4);
+  padding-bottom: var(--space-4);
+  color: var(--clr-text-primary);
+  z-index: 1;         /* sitúa el contenido sobre la ola */
+}
+
+.footer-col h4 {
+  margin-bottom: 1rem;
+  padding: 2rem 1rem;
+  font-weight: bold;
+  font-size: 1.1rem;
+}
+.footer-col a {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: var(--clr-text-primary);
+  text-decoration: none;
+}
+.footer-col a:hover {
+  text-decoration: underline;
+}
+
+/* 5. Iconos de redes sociales */
+.social-icons a {
+  font-size: 1.5rem;
+  margin-right: 0.75rem;
+  color: var(--clr-text-primary);
+  display: inline-block;
+}
+
+/* =====================================================
+   LEGAL – AVISO FINAL (ancho completo)
+   ===================================================== */
+.legal {
+  position: relative;
+  width: 100vw;
+  left: 50%;
+  margin-left: -50vw;
+  background: var(--clr-info);
+  color: var(--clr-text-primary);
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  z-index: 1;
+  text-align: center;
+  font-size: 0.85rem;
+  padding: 1.5rem 1rem;
+}
+
+.legal a {
+  color: var(--clr-primary);
+  text-decoration: underline;
+  margin: 0 0.5rem;
+}
+

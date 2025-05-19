@@ -1,0 +1,21 @@
+/*frontend\assets\css\style.css
+
+/* -------------  frontend/assets/css/styles.css  ------------- */
+/* 1 ▸ Variables globales, reset, sobrescritura bootstrap  */
+@import url("./base.css");
+
+/* 2 ▸ Utilidades de layout (espaciados, helpers genéricos) */
+@import url("./layout.css");
+
+/* 3 ▸ Componentes reutilizables (card-option, badge, etc.) */
+@import url("./components.css");
+
+/* 4 ▸ Partials que aparecen en TODAS las vistas             */
+@import url("./header.css");
+@import url("./footer.css");
+
+/* 5 ▸ Sistema de botones / helpers de botones               */
+@import url("./buttons.css");
+
+/* 6 ▸ --- Páginas globales ---                               */
+@import url("./landing.css");

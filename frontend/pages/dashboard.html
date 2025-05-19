@@ -1,26 +1,34 @@
 <!-- File: frontend/pages/dashboard.html -->
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Dashboard - Cuentix</title>
 
-  <!-- Meta + estilos -->
+  <!-- Accesibilidad y SEO -->
   <meta name="description" content="Gestión de perfiles infantiles - Cuentix">
-  <link rel="stylesheet" href="../assets/css/main.css" />
+
+  <!-- Estilos principales -->
+  <link rel="stylesheet" href="../assets/css/styles.css" />
+  <link rel="stylesheet" href="../assets/css/pages/dashboard.css" />
+
+  <!-- Iconos Bootstrap -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" />
 </head>
 
-<body>
+<body class="bg-light">
+  <!-- Enlace de accesibilidad -->
+  <a class="visually-hidden-focusable" href="#main-content">Saltar al contenido principal</a>
 
   <!-- Header dinámico -->
   <div id="header-placeholder"></div>
 
   <!-- Contenido principal -->
-  <main class="container">
+  <main id="main-content" class="container py-5">
     <section class="dashboard-section">
-      <h1>👦 Perfiles infantiles</h1>
+      <h1 class="mb-4">👦 Perfiles infantiles</h1>
 
       <!-- Contenedor dinámico donde se mostrarán los perfiles -->
       <div id="perfil-listado" class="perfil-listado">
@@ -28,8 +36,8 @@
       </div>
 
       <!-- Botón para crear un nuevo perfil -->
-      <div class="crear-perfil">
-        <a href="/pages/profile-new.html" class="btn btn-secondary">
+      <div class="crear-perfil mt-4">
+        <a href="profile-new.html" class="btn btn-secondary">
           <i class="bi bi-person-plus"></i> Crear nuevo perfil
         </a>
       </div>
@@ -39,7 +47,12 @@
   <!-- Footer dinámico -->
   <div id="footer-placeholder"></div>
 
-  <!-- JS principal -->
-  <script type="module" src="../assets/js/main.js"></script>
+  <!-- Scripts base y página -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/axios@1.7.2/dist/axios.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11" defer></script>
+  <script type="module" src="../assets/js/main.js" defer></script>
+  <script type="module" src="../assets/js/modules/pages/dashboard.js" defer></script>
 </body>
+
 </html>

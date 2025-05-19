@@ -1,0 +1,107 @@
+<!--archivo: frontend/pages/history.html-->
+
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Historial de Cuentos - Cuentix</title>
+    <meta name="description" content="Revisa y gestiona tus video cuentos creados con Cuentix.">
+
+    <!-- Bootstrap 5 CSS (CDN con SRI) -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <!-- Font Awesome para iconos (Si se usa - CDN con SRI si disponible) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+        integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!-- Bootstrap Icons (Si se usan - CDN sin SRI oficial, cargado directamente) -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <!-- SweetAlert2 CSS (CDN sin SRI oficial) -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <!-- AOS CSS (Animaciones al Scroll - CDN sin SRI oficial) -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+
+    <!-- Estilos propios (styles.css importa base.css, layout.css, components.css, partials, buttons) -->
+    <link rel="stylesheet" href="../assets/css/styles.css" />
+    <!-- Estilos específicos de esta página de historial -->
+    <link rel="stylesheet" href="../assets/css/pages/history.css" />
+
+    <!-- Meta tags para SEO/OG (Opcional para páginas internas) -->
+    <meta name="robots" content="noindex, nofollow">
+    <!-- Preload de fuentes WOFF2 (Ajustar rutas y hashes si se sirven localmente) -->
+    <!-- Nota: Reemplazar con rutas y hashes reales si se sirven localmente y no se usa Google Fonts link -->
+    <link rel="preload" href="../assets/fonts/baloo-2-v19-latin-700.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="../assets/fonts/poppins-v20-latin-regular.woff2" as="font" type="font/woff2" crossorigin>
+
+
+</head>
+
+<body>
+    <!-- Enlace para saltar al contenido principal (Accesibilidad) -->
+    <a class="visually-hidden-focusable" href="#main-content">Saltar al contenido principal</a>
+
+    <!-- =========== HEADER (cargado por JS) =========== -->
+    <div id="header-placeholder"></div>
+
+    <!-- =========== CONTENIDO PRINCIPAL =============== -->
+    <main id="main-content" class="container my-5">
+
+        <h1 class="mb-4">Historial de Cuentos</h1>
+
+        <!-- Contenedor donde el JS cargará la lista de cuentos -->
+        <!-- Se usará un grid de Bootstrap aquí para la disposición -->
+        <div id="history-list" class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
+            <!-- El JS insertará las tarjetas de cuento aquí -->
+
+            <!-- Mensaje de carga (inicialmente visible o controlado por JS) -->
+            <!-- role="status" y aria-live="polite" para que lectores de pantalla lo anuncien -->
+            <div id="history-loading" class="col-12 text-center text-secondary" role="status" aria-live="polite">
+                <p>Cargando historial...</p>
+                <!-- Opcional: Añadir un spinner Bootstrap -->
+                <!-- <div class="spinner-border text-primary" role="status"><span class="visually-hidden">Cargando...</span></div> -->
+            </div>
+
+            <!-- Mensaje de historial vacío (inicialmente oculto con 'hidden', mostrado por JS) -->
+            <div id="no-history" class="col-12 text-center text-secondary" hidden>
+                <p>Aún no has creado ningún cuento mágico.</p>
+                <p><a href="generate.html" class="btn btn-primary btn-rounded">¡Crea el primero ahora!</a></p>
+            </div>
+
+            <!-- Mensaje de error (inicialmente oculto con 'hidden', mostrado por JS) -->
+            <div id="history-error" class="col-12 alert alert-danger text-center" hidden role="alert">
+                Error al cargar el historial. Por favor, inténtalo de nuevo más tarde.
+            </div>
+
+        </div> <!-- /#history-list -->
+
+    </main>
+    <!-- Fin del contenido principal -->
+
+    <!-- =========== FOOTER (cargado por JS) =========== -->
+    <div id="footer-placeholder"></div>
+
+    <!-- Scripts -->
+    <!-- Bootstrap Bundle JS (CDN con SRI) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"
+        defer></script>
+    <!-- Axios (CDN sin SRI oficial, cargado directamente) -->
+    <script src="https://cdn.jsdelivr.net/npm/axios@1.7.2/dist/axios.min.js"
+        integrity="sha384-XMptcA9Xhz0zuPOOmepVsKibPa8Yy6a5e7y67jM8JOwG3Q2sK8LJMvj4dk58a6uX" crossorigin="anonymous"
+        defer></script>
+    <!-- SweetAlert2 JS (CDN sin SRI oficial) -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11" defer></script>
+    <!-- AOS JS (Si se usa - CDN sin SRI oficial) -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js" defer></script>
+
+    <!-- Script principal (type="module" para usar ES Modules) -->
+    <script type="module" src="../assets/js/main.js" defer></script>
+    <!-- Script específico de esta página (type="module") -->
+    <script type="module" src="../assets/js/modules/pages/history.js" defer></script>
+
+</body>
+
+</html>

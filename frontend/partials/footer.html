@@ -1,55 +1,46 @@
 <!-- frontend/partials/footer.html -->
+<footer class="bg-white border-top mt-5 pt-5">
+  <div class="container py-4">
+    <div class="row text-center text-md-start">
 
-<!-- =====================================================
-     FOOTER PARTIAL – ESTRUCTURA DEL PIE DE PÁGINA
-     ===================================================== -->
-
-<!-- 1. Ola decorativa superior (SVG) -->
-<div class="footer-wave" aria-hidden="true">
-  <svg viewBox="0 0 1440 80" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
-    <!-- Curva orgánica con fill pastel #E0F2FE -->
-    <path fill="#E0F2FE" d="M0,0 C480,80 960,0 1440,80 L1440,0 L0,0 Z"></path>
-  </svg>
-</div>
-
-<!-- 2. Contenedor principal del footer -->
-<footer class="footer">
-  <div class="container">
-    <!-- 2.1 Columnas con enlaces e información -->
-    <div class="footer-columns">
-
-      <!-- 2.1.1 Enlaces rápidos -->
-      <div class="footer-col">
-        <h4>Enlaces rápidos</h4>
-        <a href="/pages/landing.html">Inicio</a>
-        <a href="/pages/register.html">Registro</a>
-        <a href="/pages/faq.html">FAQ</a>
+      <!-- Enlaces rápidos -->
+      <div class="col-md-4 mb-4">
+        <h6 class="fw-bold mb-3">Enlaces rápidos</h6>
+        <ul class="list-unstyled">
+          <li><a href="landing.html" class="text-decoration-none">Inicio</a></li>
+          <li><a href="register.html" class="text-decoration-none">Registro</a></li>
+          <li><a href="faq.html" class="text-decoration-none">FAQ</a></li>
+        </ul>
       </div>
 
-      <!-- 2.1.2 Contacto -->
-      <div class="footer-col">
-        <h4>Contacto</h4>
-        <p>123-456-7890</p>
-        <p>info@cuentix.com</p>
+      <!-- Contacto -->
+      <div class="col-md-4 mb-4">
+        <h6 class="fw-bold mb-3">Contacto</h6>
+        <ul class="list-unstyled">
+          <li>123-456-7890</li>
+          <li>info@cuentix.com</li>
+        </ul>
       </div>
 
-      <!-- 2.1.3 Redes sociales -->
-      <div class="footer-col">
-        <h4>Síguenos</h4>
-        <div class="social-icons">
-          <a href="#" aria-label="Facebook"><i class="bi bi-facebook"></i></a>
-          <a href="#" aria-label="Instagram"><i class="bi bi-instagram"></i></a>
-        </div>
+      <!-- Síguenos -->
+      <div class="col-md-4 mb-4">
+        <h6 class="fw-bold mb-3">Síguenos</h6>
+        <a href="https://facebook.com" target="_blank" class="me-3 text-dark">
+          <i class="fab fa-facebook-f fa-lg"></i>
+        </a>
+        <a href="https://instagram.com" target="_blank" class="text-dark">
+          <i class="fab fa-instagram fa-lg"></i>
+        </a>
       </div>
-
     </div>
   </div>
 
-  <!-- 3. Aviso legal con fondo oscuro y separación superior -->
-  <div class="legal">
-    <span>
-      <a href="#">Términos</a> | <a href="#">Privacidad</a>
-    </span>
-    <p>© 2025 Cuentix. Todos los derechos reservados</p>
+  <div class="text-center py-3 bg-info text-white">
+    <div class="container">
+      <a href="terms.html" class="text-white text-decoration-none me-3">Términos</a>
+      |
+      <a href="privacy.html" class="text-white text-decoration-none ms-3">Privacidad</a>
+      <p class="mt-2 mb-0">&copy; 2025 Cuentix. Todos los derechos reservados</p>
+    </div>
   </div>
 </footer>

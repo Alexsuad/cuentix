@@ -1,162 +1,336 @@
-/* frontend/assets/css/base.css
-   =====================================================================
-   BASE.CSS – ESTILOS GLOBALES PARA CUENTIX
-   Versión 3.0 – Variables optimizadas y accesibilidad mejorada
-   ===================================================================== */
+/* archivo: frontend/assets/css/base.css
+/* ====================================================================== */
+/* frontend/assets/css/base.css - Estilos base globales para Cuentix     */
+/* Incluye: Variables CSS, Reset básico, Estilos por defecto de elementos */
+/* ====================================================================== */
 
-/* =====================================================================
-   1) VARIABLES CSS GLOBALES
-   ===================================================================== */
-   :root {
-    /* ===== PALETA DE COLORES ===== */
-    --clr-primary: #a78bfa;         /* primario (botones/enlaces) */
-    --clr-primary-dark: #8b5cf6;    /* hover primario */
-    --clr-accent: #fb7185;          /* rosa coral (destacados) */
-    --clr-accent-dark: #f43f5e;     /* hover accent */
-  
-    /* ===== TONOS NEUTRALES ===== */
-    --clr-text-primary: #1e293b;    /* texto principal */
-    --clr-text-secondary: #64748b;  /* texto secundario */
-    --clr-bg-main: #ffffff;         /* fondo principal */
-    --clr-bg-soft: #f8fafc;         /* fondos suaves */
-    --clr-border: #e2e8f0;          /* bordes */
-  
-    /* ===== ESTADOS/ALERTAS ===== */
-    --clr-success: #22c55e;
-    --clr-warning: #f59e0b;
-    --clr-error:   #ef4444;
-    --clr-info:    #0ea5e9;
-  
-    /* ===== TIPOGRAFÍA ===== */
-    --font-primary: 'Poppins', sans-serif;
-    --font-logo:    'Baloo 2', cursive;
-  
-    /* ===== SOMBRAS ===== */
-    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
-    --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
-    --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
-  
-    /* ===== RADIOS ===== */
-    --radius-sm: 0.25rem;
-    --radius-md: 0.5rem;
-    --radius-lg: 0.75rem;
-  
-    /* ===== TRANSICIONES ===== */
-    --transition-fast: 0.15s ease-in-out;
-    --transition-std:  0.3s ease-in-out;
-  
-    /* ===== SOBREESCRITURA BOOTSTRAP ===== */
-    --bs-primary:       var(--clr-primary);
-    --bs-primary-rgb:   167, 139, 250;
-    --bs-link-color:    var(--clr-primary);
-    --bs-link-hover-color: var(--clr-primary-dark);
-    --clr-blue-light: #E0F2FE;
+/* ---------------------------------------------------------------------- */
+/* 1. VARIABLES CSS GLOBALES (:root)                                      */
+/* ---------------------------------------------------------------------- */
+:root {
+  /* ===== PALETA DE COLORES ===== */
+  --clr-primary: #a78bfa;
+  /* primario (botones/enlaces) */
+  --clr-primary-dark: color-mix(in srgb, var(--clr-primary) 80%, black);
+  /* hover primario */
+  --clr-accent: #fb7185;
+  /* rosa coral (destacados) */
+  --clr-accent-dark: color-mix(in srgb, var(--clr-accent) 85%, black);
+  /* hover accent */
+  --clr-info: #0ea5e9;
+  /* azul cielo (información/estados) */
+  --clr-success: #22c55e;
+  /* verde (éxito/estados) */
+  --clr-warning: #f59e0b;
+  /* amarillo (advertencia/estados) */
+  --clr-error: #ef4444;
+  /* rojo (error/estados) */
 
-      /* ===  NUEVAS UTILIDADES  === */
-    --clr-blue-light: #E0F2FE; /* azul pastel del fondo grande   */
-    --space-4: 2rem;           /* ≈ 32 px – separaciones medianas */
-    --space-5: 4rem;           /* ≈ 64 px – separaciones grandes  */
-  }
-  
-  /* =====================================================================
-     2) RESET GLOBAL MEJORADO
-     ===================================================================== */
-  *, *::before, *::after {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-    border: 0;
-    font: inherit;
-    vertical-align: baseline;
-  }
-  
+  /* ===== TONOS NEUTRALES ===== */
+  --clr-text-primary: #1e293b;
+  /* texto principal (gris oscuro) */
+  --clr-text-secondary: #64748b;
+  /* texto secundario (gris medio) */
+  --clr-bg-main: #ffffff;
+  /* fondo principal (blanco) */
+  --clr-bg-soft: #f8fafc;
+  /* fondos suaves (casi blanco) */
+  --clr-border: #e2e8f0;
+  /* bordes suaves (gris muy claro) */
+
+  /* ===  UTILIDADES ESPECÍFICAS DE COLOR  === */
+  --clr-blue-light: #E0F2FE;
+  /* azul pastel del fondo grande (según Landing V3) */
+
+
+  /* ===== TIPOGRAFÍA ===== */
+  --font-primary: 'Poppins', sans-serif;
+  --font-logo: 'Baloo 2', cursive;
+  --font-logo-size: 2rem;
+  /* Tamaño específico del logo (ej. 32px) */
+
+
+  /* ===== SOMBRAS ===== */
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+
+
+  /* ===== RADIOS ===== */
+  --radius-sm: 0.25rem;
+  /* 4px */
+  --radius-md: 0.5rem;
+  /* 8px */
+  --radius-lg: 0.75rem;
+  /* 12px */
+  --radius-xl: 1rem;
+  /* 16px */
+  /* Añadida variable para radio más grande si se usa */
+  --radius-pill: 50rem;
+  /* Radio para píldora */
+
+
+  /* ===== TRANSICIONES ===== */
+  --transition-fast: 0.15s ease-in-out;
+  /* Rápida */
+  --transition-std: 0.3s ease-in-out;
+  /* Estándar */
+  --transition-slow: 0.5s ease-in-out;
+  /* Lenta (opcional) */
+
+
+  /* ===== ESPACIADO ===== */
+  --space-0: 0;
+  /* 0px */
+  --space-0-25: 0.25rem;
+  /* 4px */
+  --space-0-5: 0.5rem;
+  /* 8px */
+  --space-0-75: 0.75rem;
+  /* 12px */
+  --space-1: 1rem;
+  /* 16px */
+  --space-1-5: 1.5rem;
+  /* 24px */
+  --space-2: 2rem;
+  /* 32px */
+  --space-2-5: 2.5rem;
+  /* 40px */
+  --space-3: 3rem;
+  /* 48px */
+  --space-4: 4rem;
+  /* 64px */
+  --space-5: 5rem;
+  /* 80px */
+  --space-6: 6rem;
+  /* 96px */
+  --space-8: 8rem;
+  /* 128px */
+
+
+  /* --- Sobrescritura de Variables Bootstrap en :root --- */
+  /* Esto integra nuestra paleta y tipografía con los componentes de Bootstrap */
+  --bs-primary: var(--clr-primary);
+  --bs-primary-rgb: 167, 139, 250;
+  /* RGB de --clr-primary (Necesario para rgba) */
+  --bs-secondary: var(--clr-text-secondary);
+  --bs-success: var(--clr-success);
+  --bs-info: var(--clr-info);
+  --bs-warning: var(--clr-warning);
+  --bs-danger: var(--clr-error);
+  --bs-light: var(--clr-bg-soft);
+  --bs-dark: var(--clr-text-primary);
+
+  --bs-body-font-family: var(--font-primary);
+  --bs-body-color: var(--clr-text-primary);
+  --bs-body-bg: var(--clr-bg-main);
+
+  --bs-link-color: var(--clr-primary);
+  --bs-link-hover-color: var(--clr-primary-dark);
+  /* Corregido: una sola línea usando la variable */
+
+  --bs-heading-color: var(--clr-text-primary);
+
+  /* Radios de borde de Bootstrap usando nuestras variables */
+  --bs-border-radius: var(--radius-md);
+  /* Usar radio medio como default de Bootstrap */
+  --bs-border-radius-sm: var(--radius-sm);
+  --bs-border-radius-lg: var(--radius-lg);
+  --bs-border-radius-pill: var(--radius-pill);
+  /* Corregido: usar la variable --radius-pill */
+
+  /* Color de borde por defecto de Bootstrap (útil para inputs) */
+  --bs-border-color: var(--clr-border);
+
+  /* Opacidad para texto muteado de Bootstrap */
+  --bs-text-opacity: 0.65;
+  /* Valor por defecto de Bootstrap */
+
+  /* Fin Sobrescritura Variables Bootstrap */
+}
+
+/* ---------------------------------------------------------------------- */
+/* 2. RESET GLOBAL MEJORADO                                               */
+/* ---------------------------------------------------------------------- */
+/* Aplicar box-sizing de forma global para un modelo de caja predecible */
+/* Reset básico de márgenes, paddings y bordes para consistencia */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  /* Elimina bordes por defecto (ej. en imágenes, fieldsets) */
+  /* Heredar fuente y alineación vertical por defecto */
+  font: inherit;
+  /* Hereda font-family, font-size, font-weight, line-height de los padres */
+  vertical-align: baseline;
+  /* Alineación vertical por defecto */
+}
+
+/* Restaurar estilos semánticos para elementos de texto inline que font: inherit elimina */
+strong,
+b {
+  font-weight: bold;
+}
+
+/* Negrita para strong y b */
+em,
+i {
+  font-style: italic;
+}
+
+/* Cursiva para em y i */
+small {
+  font-size: 0.875em;
+}
+
+/* Tamaño reducido para small (relativo al font-size del padre) */
+
+
+/* Configuración base del HTML */
+html {
+  /* Scroll suave al navegar por anclas (ej. desde la navbar) */
+  scroll-behavior: smooth;
+  /* Espacio para que el contenido no quede oculto bajo la navbar fija/pegajosa */
+  scroll-padding-top: 5rem;
+  /* Ajustar este valor en función de la altura REAL de la navbar DESKTOP */
+  /* Tamaño de fuente base (16px por defecto en la mayoría de navegadores) */
+  font-size: 16px;
+  /* Puedes ajustar esto si quieres una base diferente (ej. 17px) */
+  /* Line-height base si no se define en body */
+  /* line-height: 1.6; */
+}
+
+/* Ajuste de scroll-padding-top para móvil si la navbar tiene altura diferente */
+@media (max-width: 767.98px) {
+
+  /* Breakpoint estándar de Bootstrap para móviles */
   html {
-    scroll-behavior: smooth;
-    scroll-padding-top: 5rem;   /* espacio para navbar fija */
-    font-size: 16px;
+    scroll-padding-top: 3.75rem;
+    /* Ajustar este valor a la altura REAL de la navbar MOBILE */
   }
-  
-  body {
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-  
-    font-family: var(--font-primary);
-    line-height: 1.6;
-    color: var(--clr-text-primary);
-    background-color: var(--clr-bg-main);
-    text-rendering: optimizeLegibility;
-    -webkit-font-smoothing: antialiased;
-  }
-  
-  /* =====================================================================
-     3) JERARQUÍA TIPOGRÁFICA
-     ===================================================================== */
-  h1, h2, h3, h4, h5, h6 {
-    font-family: var(--font-logo);
-    font-weight: 700;
-    line-height: 1.2;
-    margin-bottom: 1rem;
-  }
-  h1 { font-size: 3.052rem; }
-  h2 { font-size: 2.441rem; }
-  h3 { font-size: 1.953rem; }
-  h4 { font-size: 1.563rem; }
-  h5 { font-size: 1.25rem; }
-  
-  /* =====================================================================
-     4) ELEMENTOS INTERACTIVOS
-     ===================================================================== */
-  a {
-    color: var(--bs-link-color);
-    text-decoration: none;
-    transition: color var(--transition-fast);
-  }
-  a:hover {
-    color: var(--bs-link-hover-color);
-    text-decoration: underline;
-  }
-  
-  button {
-    cursor: pointer;
-    transition:
-      background-color var(--transition-fast),
-      transform var(--transition-fast);
-  }
-  
-  :focus-visible {
-    outline: 2px solid var(--clr-accent);
-    outline-offset: 0.25rem;
-    border-radius: var(--radius-sm);
-  }
-  
-  /* =====================================================================
-     5) UTILIDADES GLOBALES
-     ===================================================================== */
-  .text-accent {
-    color: var(--clr-accent) !important;
-  }
-  
-  .bg-highlight {
-    background-color: var(--clr-bg-soft);
-    padding: 1.5rem;
-    border-radius: var(--radius-md);
-  }
-  
-  .container {
-    width: 100%;
-    max-width: 1280px;
-    margin: 0 auto;
-    padding: 0 1rem;
-  }
-  @media (min-width: 1536px) {
-    .container {
-      max-width: 1536px;
-    }
-  }
-  
-  /* Texto pequeño secundario */
-  .small {
-    font-size: 0.9rem;
-    color: var(--clr-text-secondary);
-  }
+}
+
+
+/* ---------------------------------------------------------------------- */
+/* 3. ESTILOS POR DEFECTO DE ELEMENTOS HTML BÁSICOS                       */
+/* ---------------------------------------------------------------------- */
+
+/* Estilos para el body */
+body {
+  /* Fuente principal del cuerpo usando variable */
+  font-family: var(--font-primary);
+  /* Interlineado cómodo para lectura */
+  line-height: 1.6;
+  /* Color de texto principal usando variable */
+  color: var(--clr-text-primary);
+  /* Color de fondo principal usando variable */
+  background-color: var(--clr-bg-main);
+
+  /* Configuración de layout para Sticky Footer (si aplica) */
+  display: flex;
+  flex-direction: column;
+  /* Asegura que el body ocupe al menos la altura completa del viewport */
+  min-height: 100vh;
+
+  /* Prevenir desbordamiento horizontal (barra de scroll horizontal no deseada) */
+  overflow-x: hidden;
+
+  /* Nota: padding-top en body ya no es necesario si se usa scroll-padding-top en html */
+}
+
+/* Estilos para encabezados */
+h1,
+h2 {
+  font-family: var(--font-logo);
+  /* Usar fuente del logo solo en h1 y h2 */
+  font-weight: 700;
+  /* Negrita */
+  line-height: 1.2;
+  /* Espaciado entre líneas ajustado */
+  margin-top: 0;
+  /* Resetear margen superior por defecto */
+  margin-bottom: var(--space-1);
+  /* Margen inferior usando variable de espaciado */
+  color: var(--bs-heading-color);
+  /* Color de título */
+  /* text-rendering: optimizeLegibility; -webkit-font-smoothing: antialiased; */
+  /* Se movieron a body */
+}
+
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-primary);
+  /* Usar fuente primaria en h3 a h6 */
+  font-weight: 600;
+  /* Peso semi-negrita */
+  line-height: 1.4;
+  /* Espaciado entre líneas ajustado */
+  margin-top: 0;
+  margin-bottom: var(--space-0-5);
+  /* Margen inferior más pequeño */
+  color: var(--clr-text-primary);
+  /* Color de texto principal */
+}
+
+
+/* Estilos para enlaces */
+a {
+  color: var(--bs-link-color);
+  /* Color de enlace usando variable Bootstrap */
+  text-decoration: none;
+  /* Sin subrayado por defecto */
+  transition: color var(--transition-fast);
+  /* Transición suave usando variable */
+}
+
+a:hover {
+  color: var(--bs-link-hover-color);
+  /* Color al pasar el ratón usando variable Bootstrap */
+  text-decoration: underline;
+  /* Subrayado al pasar el ratón */
+}
+
+/* Estilos para botones (elementos <button>) */
+/* Nota: Los estilos generales para clases .btn, .btn-primary, etc. deben estar en buttons.css */
+/* Estos estilos aplican a <button> que NO tienen clases Bootstrap, lo cual debería ser raro */
+button {
+  cursor: pointer;
+  /* Mostrar cursor de puntero */
+  /* Hereda font, margin, padding, border de reset */
+  /* Transiciones si el botón no tiene clases Bootstrap (raro en este proyecto) */
+  /* transition: background-color var(--transition-fast); */
+  /* Si necesitas un estilo base mínimo para todos los buttons sin clases Bootstrap, va aquí */
+}
+
+
+/* Estilos para imágenes y videos */
+img,
+video {
+  max-width: 100%;
+  /* Asegurar que no desborden su contenedor */
+  height: auto;
+  /* Mantener la proporción */
+  display: block;
+  /* Evita espacios extras debajo de elementos inline */
+}
+
+/* Estilo para el outline de enfoque (accesibilidad) */
+/* Se muestra con teclado/tabulador o si el navegador lo requiere (no siempre con clic) */
+:focus-visible {
+  outline: 2px solid var(--clr-primary);
+  /* Outline visible, con color primario */
+  outline-offset: 0.25rem;
+  /* Separación entre el borde del elemento y el outline */
+}
+
+/* Nota: Las reglas de utilidad .small y .perfil-card-actions (y cualquier otra utilidad global) */
+/* no deben estar en base.css. Deben moverse a layout.css o un archivo utilities.css dedicado. */
+/* Esto ya se hizo en el paso anterior de layout.css */
+
+
+/* ───────────────────────────────  EOF base.css  ─────────────────────────────── */

@@ -1,5 +1,5 @@
 // File: frontend/assets/js/modules/pages/loading.js
-// Se encarga de consultar el estado de la historia y redirigir cuando esté lista
+// Espera que se genere el cuento y redirige cuando esté listo
 
 import { getToken } from '../auth.js';
 
@@ -7,12 +7,13 @@ export function initPage() {
   const statusText = document.getElementById('loading-status');
   const token = getToken();
 
+  // 1. Verifica si el usuario está autenticado
   if (!token) {
     window.location.href = '/pages/login.html';
     return;
   }
 
-  // Obtener el story_id desde la URL
+  // 2. Extrae el ID del cuento desde la URL
   const params = new URLSearchParams(window.location.search);
   const storyId = params.get('id');
 
@@ -25,6 +26,7 @@ export function initPage() {
   let intentos = 0;
   const maxIntentos = 20;
 
+  // 3. Función que consulta repetidamente el estado del cuento
   async function verificarEstado() {
     try {
       const res = await fetch(endpoint, {
@@ -35,28 +37,42 @@ export function initPage() {
 
       const data = await res.json();
 
-      if (res.ok) {
-        if (data.status === 'completed') {
-          // Redirige al resultado cuando esté lista
-          window.location.href = `/pages/result.html?id=${storyId}`;
-        } else {
-          statusText.textContent = `Estado actual: ${data.status}…`;
-          if (intentos < maxIntentos) {
-            intentos++;
-            setTimeout(verificarEstado, 5000); // Esperar 5s y volver a consultar
-          } else {
-            statusText.textContent = 'Demasiados intentos. Intenta más tarde.';
-          }
-        }
-      } else {
-        throw new Error(data?.error || 'Error inesperado');
+      if (!res.ok) {
+        throw new Error(data?.error || 'Error inesperado del servidor.');
       }
 
-    } catch (error) {
-      console.error('[loading.js] Error al verificar estado:', error);
-      statusText.textContent = 'Error al conectar con el servidor.';
+      // 4. Procesamiento según estado devuelto
+      switch (data.status) {
+        case 'completed':
+          window.location.href = `/pages/result.html?id=${storyId}`;
+          break;
+
+        case 'failed':
+          statusText.textContent = 'La generación del cuento ha fallado. Intenta nuevamente.';
+          break;
+
+        case 'pending':
+        case 'generating':
+          statusText.textContent = `Estado actual: ${data.status}...`;
+          if (intentos < maxIntentos) {
+            intentos++;
+            setTimeout(verificarEstado, 5000); // esperar 5s y volver a intentar
+          } else {
+            statusText.textContent = 'El cuento está tardando demasiado. Intenta más tarde.';
+          }
+          break;
+
+        default:
+          statusText.textContent = `Estado desconocido: ${data.status}`;
+          break;
+      }
+
+    } catch (err) {
+      console.error('[loading.js] Error al verificar estado:', err);
+      statusText.textContent = 'Error al contactar con el servidor.';
     }
   }
 
+  // 5. Inicia el ciclo de verificación
   verificarEstado();
 }

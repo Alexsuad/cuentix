@@ -13,31 +13,27 @@ export function initPage() {
     return;
   }
 
-  // Obtener story_id desde la URL
   const params = new URLSearchParams(window.location.search);
   const storyId = params.get('id');
 
   if (!storyId) {
-    videoElement.insertAdjacentHTML('beforebegin', '<p>No se encontró el video solicitado.</p>');
+    mostrarError('No se encontró el video solicitado.');
     return;
   }
 
-  // Construir la URL del video y establecerla
   const videoUrl = `http://localhost:5000/api/stories/${storyId}/download`;
 
-  // Aplicar URL protegida con token (idealmente usar backend que sirva video por cookie/session, pero aquí lo haremos simple)
   fetch(videoUrl, {
     headers: {
       Authorization: `Bearer ${token}`
     }
   })
-    .then(response => {
-      if (!response.ok) {
-        throw new Error('El video aún no está disponible.');
-      }
-      return response.blob();
+    .then(res => {
+      if (!res.ok) throw new Error('El video aún no está disponible o ocurrió un error.');
+      return res.blob();
     })
     .then(blob => {
+      if (!blob || blob.size === 0) throw new Error('El video está vacío o dañado.');
       const blobUrl = URL.createObjectURL(blob);
       videoElement.src = blobUrl;
       downloadBtn.href = blobUrl;
@@ -45,6 +41,12 @@ export function initPage() {
     })
     .catch(err => {
       console.error('[result.js] Error al cargar video:', err);
-      videoElement.insertAdjacentHTML('beforebegin', `<p>${err.message}</p>`);
+      mostrarError(err.message || 'No se pudo cargar el video.');
     });
+
+  function mostrarError(mensaje) {
+    videoElement.style.display = 'none';
+    downloadBtn.style.display = 'none';
+    videoElement.insertAdjacentHTML('beforebegin', `<p style="color:var(--clr-error);">${mensaje}</p>`);
+  }
 }

@@ -1,0 +1,60 @@
+/* — frontend/assets/css/pages/login.css — */
+
+
+/* Contenedor principal del formulario */
+.card-login {
+  background-color: var(--clr-bg-main);
+  padding: 2.5rem;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  max-width: 500px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+/* Título del formulario */
+.card-login h1 {
+  font-family: var(--font-logo);
+  font-size: 2.5rem;
+  color: var(--clr-primary);
+  margin-bottom: 1rem;
+}
+
+/* Campos de texto */
+.card-login .form-control {
+  font-size: 1rem;
+  padding: 0.75rem 1rem;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--clr-border);
+  margin-bottom: 1rem;
+}
+
+/* Enfasis en campo activo */
+.card-login .form-control:focus {
+  border-color: var(--clr-primary);
+  box-shadow: 0 0 0 3px rgba(167, 139, 250, 0.25);
+  /* var(--clr-primary) con transparencia */
+}
+
+/* Ajustes específicos del botón en login */
+.card-login .btn-cuentix {
+  width: 100%;
+  /* Que ocupe todo el ancho del formulario */
+  margin-top: 1rem;
+  /* Separación visual respecto a los campos */
+}
+
+/* Enlace a recuperación de contraseña o registro */
+.card-login a {
+  color: var(--clr-accent);
+  font-weight: bold;
+  display: inline-block;
+  margin-top: 1rem;
+  transition: color 0.2s ease;
+}
+
+.card-login a:hover {
+  color: var(--clr-accent-dark);
+}
+
+/* EOF login.css */

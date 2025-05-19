@@ -1,0 +1,53 @@
+<!-- File: frontend/pages/loading.html -->
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Generando tu video-cuento... - Cuentix</title>
+
+  <!-- Descripción para accesibilidad -->
+  <meta name="description"
+    content="Estamos generando tu video-cuento personalizado. Este proceso puede tardar unos segundos.">
+
+  <!-- Estilos base y específicos -->
+  <link rel="stylesheet" href="../assets/css/styles.css" />
+  <link rel="stylesheet" href="../assets/css/pages/loading.css" />
+
+  <!-- Íconos si se usan -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+</head>
+
+<body class="bg-light">
+
+  <!-- Header dinámico -->
+  <div id="header-placeholder"></div>
+
+  <!-- Contenido principal -->
+  <main class="container">
+    <section class="loading-section text-center">
+      <h1 class="section-title">✨ ¡Estamos creando tu video-cuento mágico!</h1>
+      <p class="text-secondary">Esto puede tardar unos segundos mientras la magia ocurre…</p>
+
+      <!-- Spinner animado -->
+      <div class="loading-spinner my-4">
+        <img src="../assets/img/loading.gif" alt="Cargando..." width="120" />
+      </div>
+
+      <!-- Estado dinámico del proceso -->
+      <div id="loading-status" class="small text-muted">
+        Contactando con el servidor...
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer dinámico -->
+  <div id="footer-placeholder"></div>
+
+  <!-- Scripts -->
+  <script type="module" src="../assets/js/main.js"></script>
+  <script type="module" src="../assets/js/modules/pages/loading.js"></script>
+</body>
+
+</html>

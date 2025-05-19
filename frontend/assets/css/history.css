@@ -1,0 +1,108 @@
+/* ───────────────────────────────────────────────────────────────── */
+/*  File: frontend/assets/css/history.css                            */
+/*  Estilos exclusivos para la página history.html de Cuentix        */
+/* ───────────────────────────────────────────────────────────────── */
+
+/* =======================================================
+   1. Contenedor principal del historial
+   ======================================================= */
+
+#history-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--space-3);
+    position: relative;
+}
+
+/* =======================================================
+   2. Mensajes de estado (centrados)
+   ======================================================= */
+
+#history-loading,
+#no-history,
+#history-error {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    width: 100%;
+}
+
+/* =======================================================
+   3. Tarjeta individual de cuento
+   ======================================================= */
+
+.history-card {
+    background-color: var(--clr-bg-main);
+    border: 1px solid var(--clr-border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md);
+    padding: var(--space-2);
+    width: 100%;
+    max-width: 300px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+/* Imagen miniatura */
+.history-card__thumb {
+    width: 100%;
+    height: auto;
+    border-radius: var(--radius-md);
+    margin-bottom: var(--space-1);
+}
+
+/* Título del cuento */
+.history-card__title {
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: var(--clr-text-primary);
+    margin-bottom: 0.5rem;
+}
+
+/* Fecha del cuento */
+.history-card__date {
+    font-size: 0.875rem;
+    color: var(--clr-text-secondary);
+    margin-bottom: var(--space-1);
+}
+
+/* =======================================================
+   4. Acciones (Ver, Descargar, Eliminar)
+   ======================================================= */
+
+.history-card__actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--space-1);
+    /* ⚠️ No compatible con Safari <14 */
+}
+
+/* Botones: usar btn + btn-rounded en HTML */
+/* Colores se aplican con clases de Bootstrap: .btn-info, .btn-danger, etc. */
+
+.history-card__actions .btn {
+    flex: 1;
+    white-space: nowrap;
+}
+
+/* =======================================================
+   5. Adaptabilidad (responsivo)
+   ======================================================= */
+
+@media (max-width: 575.98px) {
+    .history-card__actions {
+        flex-direction: column;
+        gap: var(--space-0-5);
+    }
+
+    .history-card__actions .btn {
+        width: 100%;
+    }
+}
+
+/* ──────────────────────────────── EOF history.css ──────────────────────────────── */

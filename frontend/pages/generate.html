@@ -1,0 +1,290 @@
+<!-- File: frontend/pages/generate.html -->
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Cuentix – Crea tu video-cuento</title>
+  <meta name="description" content="Crea un video-cuento infantil personalizado con ayuda de la IA." />
+  <meta name="robots" content="noindex, nofollow" />
+
+  <!-- Google Fonts (si usas estas fuentes) -->
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@700&family=Poppins&display=swap" rel="stylesheet">
+
+  <!-- Librerías externas CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+    crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    integrity="sha512-papNj9YedHNUi/cfPp7ZmBAb0hUzYJSpthbFbR3Jp6b3n4ihQ2qGOSVLQ7GRtPpVgAKBb7vU7Hd7KO+x6JGf9w=="
+    crossorigin="anonymous" referrerpolicy="no-referrer">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css"
+    integrity="sha384-HSB0/NgeZ5SqaHa1FG1zPSAw5QOUFwrXywiddadJhS7LknhjwLBOo+ZGF19nAAK" crossorigin="anonymous">
+
+  <!-- Estilos propios -->
+  <link rel="stylesheet" href="../assets/css/styles.css">
+  <link rel="stylesheet" href="../assets/css/generate.css">
+</head>
+
+
+<body class="bg-light">
+  <a class="visually-hidden-focusable" href="#main-content">Saltar al contenido principal</a>
+  <!-- Header dinámico -->
+  <div id="header-placeholder"></div>
+  <!-- ============== MAIN ============== -->
+  <main id="main-content" class="container my-5">
+    <h1 class="h3 fw-bold text-primary mb-2">Crea tu video-cuento mágico</h1>
+    <p class="text-muted mb-4">Completa los datos y elige cada elemento para una historia única.</p>
+
+    <form id="generation-form" novalidate>
+
+      <!-- 1️⃣ Datos del protagonista -->
+      <section class="mb-5" aria-labelledby="datos-prota-title">
+        <h2 id="datos-prota-title" class="text-center mb-4">Datos del protagonista</h2>
+        <div class="row g-3 justify-content-center">
+          <div class="col-12 col-md-4">
+            <label for="protagonist-age" class="form-label">Edad del niño (4 – 8 años)</label>
+            <input type="number" id="protagonist-age" name="edad" class="form-control form-control-lg" min="4" max="8"
+              required>
+            <div class="invalid-feedback">Ingresa una edad válida entre 4 y 8.</div>
+          </div>
+          <div class="col-12 col-md-4">
+            <label for="protagonist-name" class="form-label">Nombre del protagonista</label>
+            <input type="text" id="protagonist-name" name="nombre" class="form-control form-control-lg" maxlength="30"
+              placeholder="Ej. Alex" required>
+            <div class="invalid-feedback">Máx 30 caracteres.</div>
+          </div>
+          <div class="col-12 col-md-8">
+            <label for="story-theme" class="form-label">Tema o idea principal</label>
+            <input type="text" id="story-theme" name="tema" class="form-control form-control-lg"
+              placeholder="Ej. Una aventura en el espacio">
+            <div class="form-text">Déjalo vacío si prefieres que la IA lo elija.</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 2️⃣ ¿Quién quieres ser hoy? -->
+      <section class="mb-5" data-selection-name="personaje" aria-labelledby="sel-personaje">
+        <h2 id="sel-personaje" class="text-center mb-4">¿Quién quieres ser hoy?</h2>
+
+        <div class="row row-cols-2 row-cols-sm-3 row-cols-md-4 g-4 justify-content-center">
+
+          <!-- Opción 1: Superhéroe -->
+          <div class="col text-center">
+            <button type="button" class="card-option bg-super" data-value="superheroe">
+              <img src="../assets/img/generate/superheroe.png" alt="Superhéroe" class="card-option__image">
+              <span class="card-option__title">Superhéroe</span>
+            </button>
+          </div>
+
+          <!-- Opción 2: Astronauta -->
+          <div class="col text-center">
+            <button type="button" class="card-option bg-astro" data-value="astronauta">
+              <img src="../assets/img/generate/astronauta.png" alt="Astronauta" class="card-option__image">
+              <span class="card-option__title">Astronauta</span>
+            </button>
+          </div>
+
+          <!-- Opción 3: Dragón -->
+          <div class="col text-center">
+            <button type="button" class="card-option bg-dragon" data-value="dragon">
+              <img src="../assets/img/generate/dragon.png" alt="Dragón" class="card-option__image">
+              <span class="card-option__title">Dragón</span>
+            </button>
+          </div>
+
+          <!-- Opción 4: Mago -->
+          <div class="col text-center">
+            <button type="button" class="card-option bg-mage" data-value="mago">
+              <img src="../assets/img/generate/mago.png" alt="Mago" class="card-option__image">
+              <span class="card-option__title">Mago</span>
+            </button>
+          </div>
+
+        </div>
+      </section>
+
+
+      <!-- 3️⃣ ¿Dónde sucede tu historia? -->
+      <section class="mb-5" data-selection-name="lugar" aria-labelledby="sel-lugar">
+        <h2 id="sel-lugar" class="text-center mb-4">¿Dónde sucede tu historia?</h2>
+
+        <div class="row row-cols-2 row-cols-sm-3 row-cols-md-4 g-4 justify-content-center">
+
+          <!-- Opción 1: Castillo -->
+          <div class="col text-center">
+            <button type="button" class="card-option bg-castle" data-value="castillo">
+              <img src="../assets/img/generate/castillo.png" alt="Castillo de cuento" class="card-option__image">
+              <span class="card-option__title">Castillo</span>
+            </button>
+          </div>
+
+          <!-- Opción 2: Espacio -->
+          <div class="col text-center">
+            <button type="button" class="card-option bg-space" data-value="espacio">
+              <img src="../assets/img/generate/Espacio exterior.png" alt="Espacio exterior" class="card-option__image">
+              <span class="card-option__title">Espacio</span>
+            </button>
+          </div>
+
+          <!-- Opción 3: Selva -->
+          <div class="col text-center">
+            <button type="button" class="card-option bg-jungle" data-value="selva">
+              <img src="../assets/img/generate/Selva.png" alt="Selva mágica" class="card-option__image">
+              <span class="card-option__title">Selva</span>
+            </button>
+          </div>
+
+          <!-- Opción 4: Ciudad -->
+          <div class="col text-center">
+            <button type="button" class="card-option bg-city" data-value="ciudad">
+              <img src="../assets/img/generate/ciudad_colorida.png" alt="Ciudad colorida" class="card-option__image">
+              <span class="card-option__title">Ciudad</span>
+            </button>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- 4️⃣ ¿Con qué objeto mágico contarás? -->
+      <section class="mb-5" data-selection-name="objeto_magico" aria-labelledby="sel-objeto">
+        <h2 id="sel-objeto" class="text-center mb-4">¿Con qué objeto mágico contarás?</h2>
+
+        <div class="row row-cols-2 row-cols-sm-3 row-cols-md-4 g-4 justify-content-center">
+
+          <!-- Opción 1: Anillo -->
+          <div class="col text-center">
+            <button type="button" class="card-option bg-ring" data-value="anillo">
+              <img src="../assets/img/generate/anillo.png" alt="Anillo mágico" class="card-option__image">
+              <span class="card-option__title">Anillo</span>
+            </button>
+          </div>
+
+          <!-- Opción 2: Espada -->
+          <div class="col text-center">
+            <button type="button" class="card-option bg-sword" data-value="espada">
+              <img src="../assets/img/generate/espada.png" alt="Espada brillante" class="card-option__image">
+              <span class="card-option__title">Espada</span>
+            </button>
+          </div>
+
+          <!-- Opción 3: Varita -->
+          <div class="col text-center">
+            <button type="button" class="card-option bg-wand" data-value="varita">
+              <img src="../assets/img/generate/varita.png" alt="Varita mágica" class="card-option__image">
+              <span class="card-option__title">Varita</span>
+            </button>
+          </div>
+
+          <!-- Opción 4: Capa -->
+          <div class="col text-center">
+            <button type="button" class="card-option bg-cloak" data-value="capa">
+              <img src="../assets/img/generate/capa.png" alt="Capa protectora" class="card-option__image">
+              <span class="card-option__title">Capa</span>
+            </button>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- 5️⃣ ¿Quién será el villano? -->
+      <section class="mb-5" data-selection-name="villano" aria-labelledby="sel-villano">
+        <h2 id="sel-villano" class="text-center mb-4">¿Quién será el villano?</h2>
+        <div class="row row-cols-2 row-cols-sm-3 row-cols-md-4 g-4 justify-content-center">
+
+          <!-- Opción 1: Bruja -->
+          <div class="col text-center">
+            <button type="button" class="card-option bg-witch" data-value="bruja">
+              <img src="../assets/img/generate/bruja.png" alt="Bruja" class="card-option__image">
+              <span class="card-option__title">Bruja</span>
+            </button>
+          </div>
+
+          <!-- Opción 2: Fantasma -->
+          <div class="col text-center">
+            <button type="button" class="card-option bg-ghost" data-value="fantasma">
+              <img src="../assets/img/generate/fantasma.png" alt="Fantasma" class="card-option__image">
+              <span class="card-option__title">Fantasma</span>
+            </button>
+          </div>
+
+          <!-- Opción 3: Monstruo -->
+          <div class="col text-center">
+            <button type="button" class="card-option bg-monster" data-value="monstruo">
+              <img src="../assets/img/generate/moustruo.png" alt="Monstruo" class="card-option__image">
+              <span class="card-option__title">Monstruo</span>
+            </button>
+          </div>
+
+          <!-- Opción 4: Peligro natural -->
+          <div class="col text-center">
+            <button type="button" class="card-option bg-danger" data-value="peligro">
+              <img src="../assets/img/generate/montaña.png" alt="Peligro natural" class="card-option__image">
+              <span class="card-option__title">Peligro natural</span>
+            </button>
+          </div>
+
+        </div>
+      </section>
+
+
+      <!-- 6️⃣ ¿Cómo quieres que termine la historia? -->
+      <section class="mb-5" data-selection-name="tipo_final" aria-labelledby="sel-final">
+        <h2 id="sel-final" class="text-center mb-4">¿Cómo quieres que termine la historia?</h2>
+        <div class="row row-cols-2 row-cols-sm-3 row-cols-md-4 g-4 justify-content-center">
+
+          <!-- Opción 1: Final con amigos -->
+          <div class="col text-center">
+            <button type="button" class="card-option bg-friends" data-value="final_amigos">
+              <img src="../assets/img/generate/amigos.png" alt="Final con amigos" class="card-option__image" />
+              <span class="card-option__title">Final con amigos</span>
+            </button>
+          </div>
+
+          <!-- Opción 2: Final sorpresa -->
+          <div class="col text-center">
+            <button type="button" class="card-option bg-surprise" data-value="final_sorpresa">
+              <img src="../assets/img/generate/sopresa.png" alt="Final sorpresa" class="card-option__image" />
+              <span class="card-option__title">Final sorpresa</span>
+            </button>
+          </div>
+
+          <!-- Opción 3: Final ganador -->
+          <div class="col text-center">
+            <button type="button" class="card-option bg-win" data-value="final_ganador">
+              <img src="../assets/img/generate/campeon.png" alt="Final ganador" class="card-option__image" />
+              <span class="card-option__title">Final ganador</span>
+            </button>
+          </div>
+
+          <!-- Opción 4: Final con aprendizaje -->
+          <div class="col text-center">
+            <button type="button" class="card-option bg-learn" data-value="final_aprendizaje">
+              <img src="../assets/img/generate/enseñanza.png" alt="Final con aprendizaje" class="card-option__image" />
+              <span class="card-option__title">Final con aprendizaje</span>
+            </button>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- Botón Generar -->
+      <div class="text-center mt-4">
+        <button type="submit" id="generate-story-btn" class="btn btn-warning text-dark btn-rounded px-5">
+          <i class="fas fa-magic me-2"></i> Generar video-cuento
+        </button>
+      </div>
+
+    </form>
+  </main>
+  <!-- Footer dinámico -->
+  <div id="footer-placeholder"></div>
+  <!-- ··· Scripts ··· -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/axios@1.7.2/dist/axios.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11" defer></script>
+  <script type="module" src="../assets/js/main.js" defer></script>
+  <script type="module" src="../assets/js/modules/pages/generate.js" defer></script>
+</body>
+
+</html>

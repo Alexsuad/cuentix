@@ -1,27 +1,30 @@
-// File: frontend/assets/js/utils/loadPartials.js
+// File: frontend/assets/js/modules/utils/loadPartials.js
 
+/**
+ * Carga dinámica de header y footer según la ubicación del HTML.
+ * Compatible con páginas en /pages/ o en raíz.
+ */
 export async function loadPartials() {
-    const headerContainer = document.getElementById("header-placeholder");
-    const footerContainer = document.getElementById("footer-placeholder");
-  
-    // Cargar header si existe en el HTML
+  const headerContainer = document.getElementById("header-placeholder");
+  const footerContainer = document.getElementById("footer-placeholder");
+
+  // Detecta si estamos en /pages/ para ajustar la ruta relativa
+  const isInPagesFolder = window.location.pathname.includes("/pages/");
+  const prefix = isInPagesFolder ? "../" : "";
+
+  try {
     if (headerContainer) {
-      try {
-        const html = await fetch("/frontend/partials/header.html").then(r => r.text());
-        headerContainer.innerHTML = html;
-      } catch (err) {
-        console.error("[loadPartials] No se pudo cargar header.html:", err);
-      }
+      const res = await fetch(`${prefix}partials/header.html`);
+      const html = await res.text();
+      headerContainer.innerHTML = html;
     }
-  
-    // Cargar footer si existe
+
     if (footerContainer) {
-      try {
-        const html = await fetch("/frontend/partials/footer.html").then(r => r.text());
-        footerContainer.innerHTML = html;
-      } catch (err) {
-        console.error("[loadPartials] No se pudo cargar footer.html:", err);
-      }
+      const res = await fetch(`${prefix}partials/footer.html`);
+      const html = await res.text();
+      footerContainer.innerHTML = html;
     }
+  } catch (err) {
+    console.error("[loadPartials] Error al cargar header o footer:", err);
   }
-  
+}

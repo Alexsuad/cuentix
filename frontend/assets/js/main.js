@@ -1,7 +1,7 @@
 // frontend/assets/js/main.js
 // Punto de entrada principal del Frontend de Cuentix
 
-import { loadPartials } from './utils/loadPartials.js';  // ⬅️ importamos ahora como módulo
+import { loadPartials } from './modules/utils/loadPartials.js';  // ⬅️ importamos ahora como módulo
 
 function getCurrentPageName() {
   const path = window.location.pathname;

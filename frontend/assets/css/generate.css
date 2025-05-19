@@ -1,0 +1,143 @@
+/* ──────────────────────────────────────────────────────────────────── */
+/*  File: frontend/assets/css/pages/generate.css                       */
+/*  Estilos **exclusivos** para generate.html                          */
+/* ──────────────────────────────────────────────────────────────────── */
+
+/* Imagen decorativa opcional */
+.section-illustration img {
+    max-width: 320px;
+    width: 100%;
+    height: auto;
+    margin: var(--space-3) auto;
+    display: block;
+}
+
+/* Colores para tarjetas con clase .card-option */
+.card-option.bg-super {
+    background: #f97316;
+    color: #fff;
+}
+
+.card-option.bg-astro {
+    background: #8b5cf6;
+    color: #fff;
+}
+
+.card-option.bg-dragon {
+    background: #34d399;
+    color: #fff;
+}
+
+.card-option.bg-mage {
+    background: #fb7185;
+    color: #fff;
+}
+
+.card-option.bg-castle {
+    background: #6366f1;
+    color: #fff;
+}
+
+.card-option.bg-space {
+    background: #0ea5e9;
+    color: #fff;
+}
+
+.card-option.bg-jungle {
+    background: #10b981;
+    color: #fff;
+}
+
+.card-option.bg-city {
+    background: #ec4899;
+    color: #fff;
+}
+
+.card-option.bg-ring {
+    background: #fcd34d;
+    color: var(--clr-text-primary);
+}
+
+.card-option.bg-sword {
+    background: #60a5fa;
+    color: #fff;
+}
+
+.card-option.bg-wand {
+    background: #c084fc;
+    color: #fff;
+}
+
+.card-option.bg-cloak {
+    background: #f97316;
+    color: #fff;
+}
+
+.card-option.bg-witch {
+    background: #8b5cf6;
+    color: #fff;
+}
+
+.card-option.bg-ghost {
+    background: #60a5fa;
+    color: #fff;
+}
+
+.card-option.bg-monster {
+    background: #f43f5e;
+    color: #fff;
+}
+
+.card-option.bg-danger {
+    background: var(--clr-error);
+    color: #fff;
+}
+
+.card-option.bg-friends {
+    background: #fcd34d;
+    color: var(--clr-text-primary);
+}
+
+.card-option.bg-surprise {
+    background: #38bdf8;
+    color: #fff;
+}
+
+.card-option.bg-win {
+    background: #10b981;
+    color: #fff;
+}
+
+.card-option.bg-learn {
+    background: #6366f1;
+    color: #fff;
+}
+
+/* Botón Generar en estado de carga */
+#generate-story-btn.loading {
+    pointer-events: none;
+    opacity: 0.6;
+}
+
+/* Tamaño máximo en móvil para mantener proporción */
+@media(max-width:575.98px) {
+    .card-option {
+        max-width: 12rem;
+    }
+}
+
+/* Imagen fallback si no se carga */
+.card-option img[src=""],
+.card-option img:not([src]) {
+    background-color: var(--clr-bg-soft);
+    background-image: url('../img/placeholder.svg');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 48px;
+    width: 100%;
+    height: 180px;
+    border-radius: var(--radius-md);
+    display: block;
+}
+
+/* ───────────────────────────────  EOF generate.css  ─────────────────────────────── */

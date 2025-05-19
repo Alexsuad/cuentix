@@ -1,20 +1,16 @@
 // File: frontend/assets/js/modules/pages/dashboard.js
-// Muestra perfiles infantiles del adulto autenticado
 
 import { getToken } from '../auth.js';
 
 export function initPage() {
-  const perfilContainer = document.getElementById('perfil-listado'); // Contenedor donde mostrar perfiles
-
-  // Validar si el usuario está autenticado
+  const perfilContainer = document.getElementById('perfil-listado');
   const token = getToken();
+
   if (!token) {
-    console.warn('[dashboard.js] No hay token, redirigiendo al login.');
     window.location.href = '/pages/login.html';
     return;
   }
 
-  // Obtener los perfiles del backend
   fetch('http://localhost:5000/api/profiles', {
     headers: {
       'Authorization': `Bearer ${token}`
@@ -22,9 +18,7 @@ export function initPage() {
   })
     .then(res => res.json())
     .then(data => {
-      // Manejo de error si el backend devuelve estructura inesperada
       if (!Array.isArray(data)) {
-        console.error('[dashboard.js] Respuesta inesperada:', data);
         perfilContainer.innerHTML = '<p>No se pudieron cargar los perfiles.</p>';
         return;
       }
@@ -34,8 +28,7 @@ export function initPage() {
         return;
       }
 
-      // Renderizar cada perfil en la interfaz
-      perfilContainer.innerHTML = ''; // Limpiar contenido anterior
+      perfilContainer.innerHTML = '';
       data.forEach(perfil => {
         const card = document.createElement('div');
         card.className = 'perfil-card';
@@ -43,7 +36,11 @@ export function initPage() {
           <img src="${perfil.avatar_url}" alt="Avatar de ${perfil.nombre}" class="perfil-avatar" />
           <h4>${perfil.nombre}</h4>
           <p>Edad: ${perfil.edad}</p>
-          <button onclick="seleccionarPerfil('${perfil.id}')">Elegir</button>
+          <div class="perfil-card-actions">
+            <button class="btn btn-primary" onclick="seleccionarPerfil('${perfil.id}')">Elegir</button>
+            <button class="btn btn-danger" onclick="eliminarPerfil('${perfil.id}')">Eliminar</button>
+          </div>
+
         `;
         perfilContainer.appendChild(card);
       });
@@ -54,8 +51,36 @@ export function initPage() {
     });
 }
 
-// Esta función guarda el perfil seleccionado y redirige al wizard
+// Seleccionar perfil y continuar
 window.seleccionarPerfil = function (perfilId) {
   localStorage.setItem('profile_id', perfilId);
   window.location.href = '/pages/wizard.html';
-}
+};
+
+// Eliminar perfil con confirmación
+window.eliminarPerfil = async function (perfilId) {
+  const confirmar = confirm('¿Estás seguro de que deseas eliminar este perfil? Esta acción no se puede deshacer.');
+  if (!confirmar) return;
+
+  const token = getToken();
+  try {
+    const res = await fetch(`http://localhost:5000/api/profiles/${perfilId}`, {
+      method: 'DELETE',
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+
+    if (res.ok) {
+      alert('Perfil eliminado correctamente.');
+      location.reload(); // recarga la vista
+    } else {
+      const data = await res.json();
+      alert(data?.error || 'No se pudo eliminar el perfil.');
+    }
+
+  } catch (err) {
+    console.error('[dashboard.js] Error al eliminar perfil:', err);
+    alert('Hubo un problema al intentar eliminar el perfil.');
+  }
+};

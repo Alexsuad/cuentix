@@ -1,0 +1,86 @@
+/* ─────────────────────────────────────────────────────────────── */
+/* File: frontend/assets/css/pages/dashboard.css                   */
+/* Estilos exclusivos para la página dashboard.html                */
+/* Se aplica solo a la vista del adulto para gestión de perfiles   */
+/* ─────────────────────────────────────────────────────────────── */
+
+/* Contenedor principal del dashboard */
+.dashboard-section {
+    background-color: var(--clr-bg-soft);
+    /* Fondo suave definido en base.css */
+    padding: var(--space-2);
+    /* Espaciado generoso interno */
+    border-radius: var(--radius-md);
+    /* Bordes redondeados medios */
+    box-shadow: var(--shadow-md);
+    /* Sombra media */
+    margin-bottom: var(--space-4);
+    /* Separación inferior */
+}
+
+/* Listado de perfiles (contenedor de tarjetas o filas) */
+.perfil-listado {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-1);
+    /* Espacio entre tarjetas (ej. 16px) */
+    justify-content: flex-start;
+    align-items: stretch;
+    min-height: 120px;
+    /* Altura mínima mientras carga */
+    margin-bottom: var(--space-2);
+}
+
+/* Estilos para la tarjeta de perfil (si se genera con JS) */
+.perfil-card {
+    background: var(--clr-bg-main);
+    /* Fondo blanco */
+    border: 1px solid var(--clr-border);
+    /* Borde sutil */
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-sm);
+    padding: var(--space-1-5);
+    flex: 1 1 250px;
+    /* Responsive: mínimo 250px */
+    max-width: 300px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+/* Nombre del niño o perfil */
+.perfil-card h3 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--clr-text-primary);
+}
+
+/* Detalles del perfil (edad, tipo de cuento, etc.) */
+.perfil-card p {
+    margin: 0.25rem 0;
+    font-size: 0.95rem;
+    color: var(--clr-text-secondary);
+}
+
+/* Botones de acción dentro de una tarjeta */
+.perfil-card-actions {
+    margin-top: var(--space-1);
+    display: flex;
+    justify-content: space-between;
+    gap: var(--space-0-5);
+}
+
+/* Botón de crear nuevo perfil */
+.crear-perfil .btn {
+    font-weight: 600;
+    padding: var(--space-0-75) var(--space-2);
+    border-radius: var(--radius-md);
+}
+
+/* Texto de estado de carga */
+.perfil-listado p {
+    font-style: italic;
+    color: var(--clr-text-secondary);
+}
+
+/* ──────────── EOF dashboard.css ──────────── */

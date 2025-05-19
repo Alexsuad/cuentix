@@ -1,0 +1,349 @@
+/* archivo: frontend/assets/css/components.css
+/* ──────────────────────────────────────────────────────────────────── */
+/* frontend/assets/css/components.css - Estilos para Componentes Reutilizables */
+/* Contiene estilos para bloques visuales usados en varias páginas.       */
+/* Define la apariencia de componentes como tarjetas, botones, iconos, etc. */
+/* ──────────────────────────────────────────────────────────────────── */
+
+
+/* --- Contenedor de cada bloque de selección/formulario (Componente) --- */
+/* Similar a una tarjeta de sección, agrupa contenido relacionado */
+/* Usado en páginas como generate.html */
+.section-selector,
+.section-form-data {
+    /* .section-form-data usado en generate.html */
+    background: var(--clr-bg-soft);
+    /* Fondo suave usando variable de base.css */
+    padding: var(--space-2);
+    /* Espaciado interno (ej. 32px) usando variable de base.css */
+    border-radius: var(--radius-md);
+    /* Bordes redondeados (ej. 0.5rem) usando variable de base.css */
+    box-shadow: var(--shadow-md);
+    /* Sombra estándar usando variable de base.css */
+    margin-bottom: var(--space-3);
+    /* Espacio inferior (ej. 3rem) usando variable de base.css */
+    /* Asegurar que ocupe el ancho disponible por defecto */
+    width: 100%;
+}
+
+/* Títulos h2 o h3 dentro de las secciones/componentes (Componente) */
+.section-title {
+    font-family: var(--font-logo);
+    /* Fuente Baloo 2 usando variable de base.css */
+    font-size: var(--space-2);
+    /* Tamaño grande (ej. 2rem = 32px) usando variable de base.css */
+    text-align: center;
+    /* Centrado */
+    margin-bottom: var(--space-1-5);
+    /* Espacio inferior (ej. 1.5rem = 24px) usando variable de base.css */
+    text-wrap: balance;
+    /* Distribuye mejor líneas largas (navegadores modernos) */
+    color: var(--clr-text-primary);
+    /* Color de texto principal (usar var de base.css) */
+}
+
+
+/* --- Tarjeta/botón de opción seleccionable (.card-option) (Componente) --- */
+/* Estilo base para la apariencia de las tarjetas seleccionables (similares a miniaturas de landing) */
+/* Usado en la página generate.html y potencialmente otras si se reutiliza */
+.card-option {
+    display: flex;
+    /* Usamos Flexbox */
+    flex-direction: column;
+    /* Columna: imagen arriba, p abajo */
+    align-items: center;
+    /* Alinear contenido al centro horizontalmente */
+    gap: var(--space-0-5);
+    /* Espacio entre imagen y texto (ej. 8px) usando variable de base.css */
+
+    padding: var(--space-0-5);
+    /* Pequeño padding interno (ej. 8px) */
+    /* Fondo y color de texto se definirán por clases .bg-* o heredarán de .col/padre */
+    /* background: var(--clr-bg-main); */
+    /* No definir fondo base aquí si usará clases bg-*/
+    /* color: var(--clr-text-primary); */
+    /* No definir color base aquí si usará clases bg-*/
+
+    border: 1px solid var(--clr-border);
+    /* Borde sutil por defecto */
+    border-radius: var(--radius-md);
+    /* Bordes redondeados (ej. 0.5rem) */
+    box-shadow: var(--shadow-sm);
+    /* Sombra suave */
+    cursor: pointer;
+    /* Mostrar cursor de mano */
+
+    transition:
+        /* Transición suave al pasar el ratón y seleccionar */
+        transform var(--transition-fast),
+        box-shadow var(--transition-fast),
+        border-color var(--transition-fast);
+    /* Transición para el borde (estado seleccionado) */
+
+    outline: none;
+    /* Quitamos contorno por defecto */
+}
+
+/* Estado al pasar el cursor o enfocar con teclado */
+/* Note: Este estilo aplica a .card-option:hover Y .card-option:focus-visible */
+.card-option:hover,
+.card-option:focus-visible {
+    transform: translateY(-4px);
+    /* Eleva la tarjeta */
+    box-shadow: var(--shadow-md);
+    /* Sombra más pronunciada */
+    /* No cambiar border-color aquí, solo en .is-selected */
+}
+
+/* Estado seleccionado (manejado por JS añadiendo la clase .is-selected) */
+.card-option.is-selected {
+    border-color: var(--clr-primary);
+    /* Resaltar con el color primario (ej. Lila) */
+    box-shadow: var(--shadow-lg);
+    /* Sombra más profunda */
+    transform: scale(1.03);
+    /* Ligeramente más grande */
+    /* Aseguramos que el outline de focus-visible de base.css siga funcionando */
+}
+
+
+/* Imagen dentro de la tarjeta de opción */
+.card-option .card-img {
+    /* Ajustar tamaño y forma de la imagen */
+    /* El tamaño principal es controlado por el contenedor .col en el HTML, esto es el tamaño de la imagen DENTRO */
+    width: 100%;
+    /* Ocupa el ancho disponible en su contenedor .card-option */
+    max-width: 160px;
+    /* Limitar tamaño máximo de la imagen (similar a miniaturas) */
+    height: auto;
+    /* Mantener proporción */
+    object-fit: contain;
+    /* Asegurar que la imagen se vea completa */
+
+    border-radius: var(--radius-sm);
+    /* Bordes ligeramente redondeados */
+    display: block;
+    /* Asegurar que sea bloque */
+    margin: 0 auto var(--space-0-5);
+    /* Centrar imagen y añadir espacio inferior (ej. 8px) */
+    user-select: none;
+    /* Evitar selección accidental de la imagen al hacer clic */
+}
+
+/* Texto bajo la imagen de la tarjeta de opción */
+.card-option .card-label {
+    margin: 0;
+    /* Quitamos margen por defecto */
+    font-size: var(--space-1);
+    /* Tamaño base (ej. 1rem = 16px) */
+    font-weight: 600;
+    /* Semi‐bold */
+    /* Color de texto principal se hereda o se define por clases .bg-* */
+    /* color: var(--clr-text-primary); */
+    text-align: center;
+    /* Centrado */
+}
+
+
+/* --- Botón de acción con bordes tipo “píldora” (.btn-rounded) (Componente) --- */
+/* Usado para botones principales como "Generar", "Entrar", "Registrarse" */
+.btn-rounded {
+    border-radius: var(--radius-pill);
+    /* Bordes súper redondeados usando variable de base.css */
+    font-weight: 600;
+    /* Texto en negrita         */
+    padding: var(--space-0-75) var(--space-2-5);
+    /* Tamaño generoso (ej. 12px vert, 40px horiz) usando variables */
+    text-decoration: none;
+    /* Elimina subrayado (si es <a>) */
+    display: inline-block;
+    /* Se comporta como botón/link */
+    border: none;
+    /* Sin borde */
+    cursor: pointer;
+    /* Cursor de puntero */
+    transition:
+        /* Transición suave hover   */
+        background-color var(--transition-fast),
+        transform var(--transition-fast),
+        box-shadow var(--transition-fast);
+}
+
+/* Nota: Los colores específicos (btn-primary, btn-warning) irán en buttons.css */
+
+
+/* --- ICONOS DE BENEFICIOS (.benefit-icon) (Componente) --- */
+/* Contenedor del ícono (círculo) */
+.benefit-icon {
+    display: inline-block;
+    width: var(--space-2);
+    /* Tamaño del círculo (ej. 32px) usando variable */
+    height: var(--space-2);
+    border-radius: var(--radius-pill);
+    /* Círculo perfecto */
+    position: relative;
+    /* permite que ::before se posicione dentro */
+    margin-bottom: var(--space-0-5);
+    /* Espacio debajo del icono */
+    /* Color de fondo se define por clases .icon-* o .bg-* */
+    /* background: var(--clr-primary); */
+    color: white;
+    /* Color del símbolo dentro del círculo */
+}
+
+/* Posicionamiento base del ícono simbólico dentro del círculo */
+.benefit-icon::before {
+    content: "";
+    /* se sobrescribirá en cada icono (ej. con content: "+";) */
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: var(--space-1);
+    /* Tamaño del símbolo (ej. 1rem = 16px) */
+    font-weight: bold;
+    line-height: 1;
+    /* font-family para iconos si se usa una fuente de iconos especifica (ej. Font Awesome) */
+}
+
+/* --- CLASES DE COLOR para ICONOS DE BENEFICIOS (.benefit-icon.icon-*) (Componente) --- */
+/* Estas clases aplican el color de fondo al .benefit-icon y el contenido/símbolo al ::before. */
+/* Nomenclatura: .icon-[nombre] */
+/* Se aplican a .benefit-icon */
+
+.benefit-icon.icon-plus {
+    background: var(--clr-success);
+}
+
+.benefit-icon.icon-plus::before {
+    content: "+";
+}
+
+.benefit-icon.icon-check {
+    background: var(--clr-info);
+}
+
+.benefit-icon.icon-check::before {
+    content: "✔";
+}
+
+.benefit-icon.icon-palette {
+    background: var(--clr-accent);
+}
+
+.benefit-icon.icon-palette::before {
+    content: "🎨";
+}
+
+/* Añadir otros iconos de beneficio si son necesarios */
+
+
+/* --- Tarjeta de Perfil (.perfil-card) (Componente) --- */
+/* Usada en la página dashboard.html */
+.perfil-card {
+    background: var(--clr-bg-main);
+    padding: var(--space-1-5);
+    /* ej. 24px */
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-sm);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-0-5);
+    border: 1px solid var(--clr-border);
+    /* Añadir borde sutil */
+}
+
+.perfil-card:hover {
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
+}
+
+.perfil-card .perfil-avatar {
+    width: var(--space-3);
+    /* ej. 48px */
+    height: var(--space-3);
+    object-fit: cover;
+    border-radius: var(--radius-pill);
+    /* Círculo perfecto */
+    border: 3px solid var(--clr-bg-soft);
+    /* Borde alrededor del avatar */
+    margin-bottom: var(--space-0-5);
+    /* Espacio debajo del avatar */
+}
+
+.perfil-card h4 {
+    font-family: var(--font-primary);
+    /* Título del perfil con fuente primaria */
+    font-size: var(--space-1);
+    margin-bottom: var(--space-0-25);
+    /* Espacio bajo el nombre */
+}
+
+.perfil-card p {
+    font-size: var(--space-0-75);
+    /* Tamaño de fuente para la edad */
+    color: var(--clr-text-secondary);
+    margin-bottom: var(--space-1);
+    /* Espacio bajo la edad */
+}
+
+/* Distribución de botones dentro de tarjetas de perfil */
+.perfil-card-actions {
+    margin-top: var(--space-0-75);
+    /* Espacio superior (ej. 12px) */
+    display: flex;
+    /* Usar flexbox para distribuir botones */
+    justify-content: space-between;
+    /* Espacio entre botones (cubrir ancho) */
+    gap: var(--space-0-5);
+    /* Espacio mínimo entre botones (ej. 8px) */
+    width: 100%;
+    /* Ocupar todo el ancho de la tarjeta */
+}
+
+/* Ajustar botones dentro de .perfil-card-actions para que se ajusten */
+.perfil-card-actions .btn {
+    flex-grow: 1;
+    /* Permite que los botones crezcan para llenar el espacio */
+    text-align: center;
+    /* Centrar texto si el padding no lo hace */
+    /* Eliminar padding horizontal si se usa flex-grow para controlar ancho */
+    padding-left: var(--space-0-75);
+    padding-right: var(--space-0-75);
+}
+
+
+/* --- Estado de carga para botones o componentes (.loading) --- */
+/* Aplicable a #generate-story-btn u otros elementos que cargan */
+.loading {
+    pointer-events: none;
+    /* Deshabilita clics */
+    opacity: 0.6;
+    /* Reduce opacidad */
+    /* Se podría añadir un spinner Bootstrap aquí con JS */
+}
+
+.card-option__image {
+    width: 234px;
+    /* 🔒 Ancho fijo */
+    height: 234px;
+    /* 🔒 Alto fijo */
+    object-fit: contain;
+    /* Escala la imagen manteniendo proporción sin recorte */
+    display: block;
+    /* Comportamiento de bloque para centrar */
+    margin: 0 auto var(--space-0-5);
+    border-radius: var(--radius-sm);
+    /* Bordes suaves */
+    user-select: none;
+    /* Previene selección accidental */
+    background-color: var(--clr-bg-main);
+    /* Fondo neutro para imágenes transparentes */
+}
+
+
+/* ====================================================================== */
+/* Fin de frontend/assets/css/components.css                              */
+/* ====================================================================== */

@@ -19,16 +19,17 @@
   <!-- SweetAlert2 CSS (CDN) -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
 
-  <!-- ··· Estilos propios ··· -->
-  <!-- Archivo principal que importa estilos base, layout, components, etc. -->
-  <link rel="stylesheet" href="../assets/css/styles.css">
-  <!-- Estilos específicos de esta página -->
-  <link rel="stylesheet" href="../assets/css/pages/landing.css">
+  <!-- ··· Estilos del Proyecto ··· -->
+  <!-- Estilo base -->
+  <link rel="stylesheet" href="/assets/css/styles.css">
+  <!-- Estilo específico de esta página -->
+  <link rel="stylesheet" href="/assets/css/pages/landing.css">
+
 
   <!-- ··· Preload de fuentes WOFF2 (Opcional si no se usa Google Fonts Link) ··· -->
   <!-- Nota: Reemplazar con rutas y hashes reales si se sirven localmente -->
-  <!-- <link rel="preload" href="../assets/fonts/baloo-2-v19-latin-700.woff2" as="font" type="font/woff2" crossorigin> -->
-  <!-- <link rel="preload" href="../assets/fonts/poppins-v20-latin-regular.woff2" as="font" type="font/woff2" crossorigin> -->
+  <!-- <link rel="preload" href="/assets/fonts/baloo-2-v19-latin-700.woff2" as="font" type="font/woff2" crossorigin> -->
+  <!-- <link rel="preload" href="/assets/fonts/poppins-v20-latin-regular.woff2" as="font" type="font/woff2" crossorigin> -->
   <!-- ··· Meta tags para SEO/OG (Opcional) ··· -->
   <!-- <meta property="og:title" content="Cuentix..."> -->
 
@@ -49,13 +50,20 @@
     <h1 class="mb-2">Crea tu video-cuento mágico</h1>
     <p class="text-secondary mb-5">Completa los datos y elige cada elemento para una historia única.</p>
 
+    <!-- Spinner visual + mensaje de estado -->
+    <div class="text-center mt-5">
+      <div class="spinner-border text-primary mb-3" role="status" aria-hidden="true"></div>
+      <p id="loading-status" class="lead text-muted">Preparando tu cuento mágico...</p>
+    </div>
+
+
     <!-- =========== SECCIÓN 1: HERO (Ilustración, Texto, Miniaturas) =========== -->
     <!-- Usa grid para el layout y wrapper para fondo de ancho completo -->
     <section class="hero-grid section-wrapper-lightblue mb-0">
       <!-- 1 · Ilustración principal -->
       <div class="hero-illustration">
-        <!-- <img src="../assets/img/landing/blob-hero.svg" aria-hidden="true" class="hero-blob" alt=""> -->
-        <img src="../assets/img/landing/nino-leyendo.png" alt="Niño leyendo un libro verde" class="hero-main-img">
+        <!-- <img src="/assets/img/landing/blob-hero.svg" aria-hidden="true" class="hero-blob" alt=""> -->
+        <img src="/assets/img/landing/nino-leyendo.png" alt="Niño leyendo un libro verde" class="hero-main-img">
       </div>
 
       <!-- 2 · Texto de bienvenida y CTA -->
@@ -68,10 +76,10 @@
 
       <!-- 3 · Miniaturas de ejemplo -->
       <div class="hero-thumbs" aria-label="Ejemplos de cuentos">
-        <img src="../assets/img/landing/thumb1.png" alt="Astronauta soñador" class="thumb">
-        <img src="../assets/img/landing/thumb2.png" alt="Niña y dinosaurio" class="thumb">
-        <img src="../assets/img/landing/thumb3.png" alt="Niño celebrando" class="thumb">
-        <img src="../assets/img/landing/thumb4.png" alt="Mago infantil" class="thumb">
+        <img src="/assets/img/landing/thumb1.png" alt="Astronauta soñador" class="thumb">
+        <img src="/assets/img/landing/thumb2.png" alt="Niña y dinosaurio" class="thumb">
+        <img src="/assets/img/landing/thumb3.png" alt="Niño celebrando" class="thumb">
+        <img src="/assets/img/landing/thumb4.png" alt="Mago infantil" class="thumb">
       </div>
     </section>
 
@@ -129,9 +137,9 @@
   <!-- SweetAlert2 (CDN) -->
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11" defer></script>
   <!-- Script principal del proyecto (type="module" para usar ES Modules) -->
-  <script type="module" src="../assets/js/main.js" defer></script>
+  <script type="module" src="/assets/js/main.js" defer></script>
   <!-- Script específico de esta página (type="module") -->
-  <script type="module" src="../assets/js/modules/pages/landing.js" defer></script>
+  <script type="module" src="/assets/js/modules/pages/landing.js" defer></script>
 
 </body>
 

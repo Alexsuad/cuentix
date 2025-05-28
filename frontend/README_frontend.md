@@ -42,11 +42,11 @@ frontend/
 │   ├── js/
 │   │   ├── main.js             # Carga dinámica de scripts por página
 │   │   └── modules/
-│   │       ├── api.js
+│   │       ├── api.js          # Cliente Axios con interceptores y loginUsuario()
 │   │       ├── utils/
-│   │       │   ├── loadPartials.js
-│   │       │   └── showFeedback.js
-│   │       └── pages/          # Scripts por vista
+│   │       │   ├── loadPartials.js  # Inserta header/footer en cada página
+│   │       │   └── showFeedback.js # Módulo común para SweetAlert2
+│   │       └── pages/          # Scripts por vista (cada uno con initPage())
 │   │           ├── login.js
 │   │           ├── register.js
 │   │           ├── generate.js
@@ -66,28 +66,32 @@ frontend/
 ## 📌 Características clave
 
 - Uso de `partials/` para evitar duplicación de contenido común (header, footer).
-- Sistema modular `initPage()` para inicializar solo el JS necesario por pantalla.
-- Estilos centralizados en `base.css` y organizados por página.
-- Peticiones al backend realizadas con **Axios**, gestionadas desde `api.js`.
-- Retroalimentación visual con **SweetAlert2**.
-- Responsive asegurado con **Bootstrap 5.3** y media queries personalizadas.
+- Sistema modular `initPage()` que inicializa solo el JS necesario según la página activa.
+- Validaciones HTML5 personalizadas combinadas con feedback visual (SweetAlert2 + Bootstrap).
+- Estilos centralizados con CSS modular (`base.css`, `layout.css`, `components.css`).
+- Axios configurado con interceptores para añadir el JWT automáticamente a las peticiones.
+- SweetAlert2 usado en todos los flujos para feedback visual claro (éxito, error, advertencia).
+- Interfaz responsive con Bootstrap 5.3 y ajustes adicionales por CSS personalizado.
 
 ---
 
 ## 🔄 Flujo de navegación MVP
 
 1. `landing.html` – Bienvenida
-2. `login.html` o `register.html` – Acceso de usuario
-3. `generate.html` – Ingreso de nombre y edad + selección de opciones visuales
-4. `loading.html` – Espera mientras se genera el cuento
-5. `result.html` – Visualización del cuento generado
-6. `history.html` – Listado de cuentos generados y opción de eliminar
+2. `register.html` o `login.html` – Registro e inicio de sesión con validación visual y JWT
+3. `generate.html` – Ingreso de nombre, edad y selección visual (5 secciones)
+4. `loading.html` – Animación de espera mientras se genera el cuento
+5. `result.html` – Visualización del video-cuento generado (con opción de descarga)
+6. `history.html` – Historial de cuentos generados, con botón de eliminación
 
 ---
 
-## 🧪 Pruebas
+## 🧪 Pruebas y validaciones
 
-El archivo `happy_path.feature` define el flujo esperado de uso desde el inicio hasta el resultado. Se ha validado manualmente y se prepara su integración con herramientas de testing como Cypress o Playwright.
+- El archivo `happy_path.feature` define el flujo extremo a extremo ideal del MVP.
+- Se validó el correcto uso del token `cuentix_token` y su envío automático vía `apiClient`.
+- Todas las páginas HTML fueron revisadas con `F12` y validadores de accesibilidad visual.
+- Se está trabajando en pruebas automatizadas con Cypress (post-MVP).
 
 ---
 

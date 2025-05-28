@@ -3,20 +3,20 @@
 # Este módulo gestiona la carga y formateo seguro de los prompts de texto para Cuentix.
 
 import os
+from pathlib import Path
 
-def cargar_plantilla_prompt(ruta: str) -> str:
+def cargar_plantilla_prompt(ruta_relativa):
     """
-    Carga el contenido de una plantilla de prompt desde un archivo de texto.
-    
-    Parámetros:
-    - ruta (str): Ruta relativa del archivo (por ejemplo: 'config/prompt_base.txt')
-    
-    Retorna:
-    - str: Contenido del archivo como string.
+    Carga una plantilla de texto desde una ruta relativa al proyecto,
+    como 'backend/config/prompt_base.txt'.
     """
-    ruta_absoluta = os.path.abspath(ruta)  # Convierte la ruta relativa en absoluta
+    # Base: raíz del proyecto (sube 3 niveles desde /backend/utils/)
+    ruta_base = Path(__file__).resolve().parent.parent.parent
+    ruta_absoluta = ruta_base / ruta_relativa
+
     with open(ruta_absoluta, "r", encoding="utf-8") as archivo:
         return archivo.read()
+
 
 def formatear_prompt(plantilla: str, datos: dict) -> str:
     """

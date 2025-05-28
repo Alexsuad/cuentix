@@ -44,6 +44,7 @@ export function initPage() {
       // 4. Procesamiento según estado devuelto
       switch (data.status) {
         case 'completed':
+          statusText.textContent = '¡Listo! Redirigiendo a tu video-cuento...';
           window.location.href = `/pages/result.html?id=${storyId}`;
           break;
 
@@ -53,7 +54,7 @@ export function initPage() {
 
         case 'pending':
         case 'generating':
-          statusText.textContent = `Estado actual: ${data.status}...`;
+          statusText.textContent = `Generando cuento mágico... (Intento ${intentos + 1} de ${maxIntentos})`;
           if (intentos < maxIntentos) {
             intentos++;
             setTimeout(verificarEstado, 5000); // esperar 5s y volver a intentar

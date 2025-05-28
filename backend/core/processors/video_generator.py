@@ -1,14 +1,27 @@
-# core/processors/video_generator.py
+# backend/core/processors/video_generator.py
+# ──────────────────────────────────────────────────────────────────────────────
+# Descripción: Ensambla clips de video usando MoviePy (API v2.x)
+# - Combina imagen, audio y subtítulos por escena
+# - Compatible con Pillow >= 9.2 y MoviePy >= 2.0
+# ──────────────────────────────────────────────────────────────────────────────
 
-from moviepy.editor import ImageClip, AudioFileClip, TextClip, CompositeVideoClip
+# Parche para compatibilidad con Pillow ≥10 (por eliminación de ANTIALIAS)
+from PIL import Image
+if not hasattr(Image, "ANTIALIAS"):
+    Image.ANTIALIAS = Image.Resampling.LANCZOS
+
+import os
+from moviepy import ImageClip, AudioFileClip, TextClip, CompositeVideoClip
+from moviepy.video.fx import resize, margin  # ✅ forma correcta # Importación correcta de efectos
 from utils.logger import get_logger
 
 logger = get_logger(__name__)
 
 class VideoGenerator:
     """
-    Esta clase combina imagen, audio y texto para crear un clip de video
-    usando moviepy. Se usa una imagen fija con audio narrado y texto opcional.
+    Clase encargada de combinar imagen, audio y subtítulos en un clip de video.
+    Utiliza MoviePy para crear escenas a partir de ilustraciones generadas,
+    narración en audio y subtítulos sincronizados.
     """
 
     def create_clip(self, ruta_imagen: str, ruta_audio: str, texto: str) -> CompositeVideoClip:
@@ -21,34 +34,44 @@ class VideoGenerator:
         - texto (str): Texto del párrafo que será mostrado como subtítulo.
 
         Retorna:
-        - CompositeVideoClip: Clip de video listo para ser unido con otros clips.
+        - CompositeVideoClip: Clip de video listo para unirse con otros clips.
         """
-
         try:
             logger.info(f"Creando clip de video para: {ruta_imagen}")
 
-            # Cargamos la imagen como clip de fondo
-            imagen_clip = ImageClip(ruta_imagen)
+            # Verificar existencia de archivos requeridos
+            if not (ruta_imagen and os.path.exists(ruta_imagen)):
+                raise FileNotFoundError(f"Imagen no encontrada: {ruta_imagen}")
+            if not (ruta_audio and os.path.exists(ruta_audio)):
+                raise FileNotFoundError(f"Audio no encontrado: {ruta_audio}")
 
-            # Cargamos el audio narrado
+            # Crear clip de imagen y aplicar duración + audio
+            imagen_clip = ImageClip(ruta_imagen)
             audio_clip = AudioFileClip(ruta_audio)
 
-            # Ajustamos duración de la imagen al audio
-            imagen_clip = imagen_clip.set_duration(audio_clip.duration)
+            imagen_clip = (
+                imagen_clip.with_duration(audio_clip.duration)
+                           .with_audio(audio_clip)
+            )
+            imagen_clip = resize.resize(imagen_clip, height=720)  # Redimensionar a 720p
 
-            # Redimensionamos la imagen a un tamaño de video estándar
-            imagen_clip = imagen_clip.resize(height=720)
+            # Crear clip de subtítulo
+            subtitulo = TextClip(
+                text=texto,
+                font="DejaVuSans-Bold",  # Asegúrate de tener esta fuente instalada
+                font_size=30,
+                color="white",
+                method="caption",
+                size=(1080, None)
+            ).with_duration(audio_clip.duration) \
+             .with_position(("center", "bottom"))
+            subtitulo = margin.margin(subtitulo, bottom=30)
 
-            # Añadimos el audio al clip
-            imagen_clip = imagen_clip.set_audio(audio_clip)
-
-            # Creamos el subtítulo como texto superpuesto
-            subtitulo = TextClip(texto, fontsize=30, color='white', font="Arial-Bold", method="caption", size=(1080, None))
-            subtitulo = subtitulo.set_duration(audio_clip.duration)
-            subtitulo = subtitulo.set_position(("center", "bottom")).margin(bottom=30)
-
-            # Combinamos imagen + texto + audio
+            # Componer el clip final con imagen + subtítulo
             video_clip = CompositeVideoClip([imagen_clip, subtitulo])
+
+            # Liberar recursos
+            audio_clip.close()
 
             return video_clip
 

@@ -5,6 +5,7 @@ import os
 import sys
 from concurrent.futures import ThreadPoolExecutor
 from dotenv import load_dotenv  # NUEVO
+from app import app  # Importa la app Flask desde app.py
 
 # Cargar variables de entorno
 load_dotenv()
@@ -110,4 +111,4 @@ def main():
     print("\n✅ ¡Video generado exitosamente!\n")
 
 if __name__ == "__main__":
-    main()
+    app.run(debug=True)

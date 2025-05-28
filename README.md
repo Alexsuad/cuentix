@@ -7,15 +7,16 @@ Cuentix es una aplicación web que permite generar video-cuentos infantiles pers
 ## 🚀 Estado del Proyecto
 
 🔧 Actualmente en desarrollo (Mayo 2025)  
-✔️ Backend funcional con Flask, SQLAlchemy y generación multimedia  
-⚙️ Frontend en fase de integración y ajustes finales  
-🗃️ MVP listo para presentación académica (entrega final: 05 junio 2025)
+✅ Backend funcional con Flask, SQLAlchemy y generación multimedia  
+✅ Frontend conectado con backend (registro, login, generación, historial)  
+📦 MVP listo para presentación académica (entrega final: 05 junio 2025)
 
 ---
 
 ## 📦 Tecnologías utilizadas
 
 ### 🔹 Frontend
+
 - HTML5 + CSS3 modular
 - JavaScript ES Modules
 - Bootstrap 5.3
@@ -25,8 +26,10 @@ Cuentix es una aplicación web que permite generar video-cuentos infantiles pers
 - FontAwesome + Bootstrap Icons
 
 ### 🔹 Backend
+
 - Python 3.10
 - Flask + Flask-JWT-Extended
+- Flask-CORS (para permitir conexión con frontend en otro puerto)
 - SQLAlchemy (ORM)
 - SQLite (modo local) / PostgreSQL (modo producción)
 - OpenAI API (texto, imágenes, voz)
@@ -34,6 +37,7 @@ Cuentix es una aplicación web que permite generar video-cuentos infantiles pers
 - gTTS (motor de voz alternativo)
 - ElevenLabs (voz premium)
 - DiskCache (caché inteligente)
+- passlib (hasheo de contraseñas)
 
 ---
 
@@ -62,13 +66,14 @@ Cuentix es una aplicación web que permite generar video-cuentos infantiles pers
 
 ## ✅ Funcionalidades actuales
 
-- [x] Registro e inicio de sesión con JWT
-- [x] Generación de cuento personalizado con nombre y edad
+- [x] Registro e inicio de sesión real con base de datos y JWT
+- [x] Validación visual de formularios en frontend (login y registro)
+- [x] Generación de cuento personalizado con nombre, edad y opciones visuales
 - [x] IA genera texto, imágenes, audio y subtítulos automáticamente
 - [x] Ensamblado del cuento en video y descarga del archivo
 - [x] Página de historial con consulta y eliminación de cuentos
 - [x] Interfaz responsive y modular
-- [ ] Conexión total frontend-backend (en progreso)
+- [x] Conexión estable frontend-backend (puerto 5501 → 5000 con CORS)
 - [ ] Flujo tipo Wizard (en pausa para post-MVP)
 
 ---
@@ -76,6 +81,9 @@ Cuentix es una aplicación web que permite generar video-cuentos infantiles pers
 ## 🔒 Seguridad
 
 - Autenticación por JWT en todas las rutas protegidas
+- Verificación de email y contraseña en base de datos
+- Hasheo seguro con passlib (pbkdf2_sha256)
+- Protección CORS entre servidores (`localhost:5501` ↔ `localhost:5000`)
 - Validación de datos y sanitización de entradas
 - Gestión de errores con registro en base de datos
 
@@ -89,34 +97,33 @@ Cuentix es una aplicación web que permite generar video-cuentos infantiles pers
 
 ## ⚠️ Riesgos técnicos identificados y medidas preventivas
 
-A lo largo del desarrollo del sistema se han identificado puntos críticos que podrían afectar la estabilidad o funcionalidad del proyecto. A continuación se describen estos posibles inconvenientes, junto con las medidas adoptadas para prevenirlos.
-
 ### 🔌 Integración Frontend–Backend
 
-- ✅ Todos los endpoints (`/start`, `/status`, `/download`, `/auth/*`) fueron probados exitosamente con Postman antes de conectarlos al frontend.
-- Se validó el envío correcto de datos desde `generate.html` y su recepción estructurada en el backend.
-- Se verificaron las respuestas esperadas (`status`, `story_id`, `video_path`) y el manejo de errores.
+- ✅ Todos los endpoints (`/auth/*`, `/profiles`, `/stories`) probados con Postman y frontend
+- ✅ CORS gestionado correctamente con `flask-cors`
+- ✅ Peticiones `OPTIONS` eliminadas manualmente y gestionadas automáticamente
 
 ### 🧠 Flujo de generación por IA
 
-- Se implementó registro de errores por historia mediante el campo `error_message` en la base de datos.
-- Se están probando flujos con historias incompletas para asegurar tolerancia a fallos (por ejemplo, si falla la generación de audio o imagen).
+- Registro de errores por historia (`error_message` en `Story`)
+- Flujo tolerante a fallos (por ejemplo, si falla la generación de audio o imagen)
 
 ### 🗃️ Persistencia y gestión de archivos
 
-- Se programará la función `cleanup_story_files()` para eliminar archivos temporales tras completar o eliminar una historia.
-- Ya se registra el `video_path` de cada cuento para asegurar su disponibilidad desde el historial.
+- Ya se registra el `video_path` de cada cuento en la BD
+- Se implementará `cleanup_story_files()` para eliminar temporales
 
 ### 🎨 Coherencia visual en el frontend
 
-- Se utilizan variables CSS centralizadas (`base.css`) para mantener estilos consistentes.
-- Se aplica el sistema de grillas de Bootstrap para garantizar responsividad en todas las pantallas.
-- Se está auditando cada página para asegurar uniformidad visual.
+- Variables CSS centralizadas (`base.css`)
+- Sistema de grillas de Bootstrap para responsividad
+- Cada página se audita para mantener uniformidad visual y accesibilidad
 
 ### 🧪 Validaciones y pruebas
 
-- El flujo extremo a extremo ha sido validado con datos reales desde frontend simulado.
-- Se ha comenzado la documentación del flujo tipo `happy_path.feature` como base para pruebas futuras.
+- Flujo extremo a extremo validado: `register → login → generate → loading → history`
+- Documentación técnica actualizada con estructura de endpoints por módulo
+- JWT probado con interceptor automático en Axios
 
 ---
 

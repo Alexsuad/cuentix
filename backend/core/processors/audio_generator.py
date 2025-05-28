@@ -28,7 +28,7 @@ class AudioGenerator:
 
             elif self.motor == "openai":
                 from core.apis.openai_tts_api import convertir_texto_a_audio_openai
-                return convertir_texto_a_audio_openai(texto, os.path.basename(nombre_archivo))
+                return convertir_texto_a_audio_openai(texto, str(ruta))
 
             elif self.motor == "elevenlabs":
                 from core.apis.elevenlabs_api import convertir_texto_a_audio_elevenlabs

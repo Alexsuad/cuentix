@@ -1,8 +1,5 @@
 # core/apis/openai_tts_api.py
 
-# Este módulo convierte texto a voz usando la API de OpenAI Text-to-Speech (TTS).
-# Implementa manejo de errores, reintentos con tenacity y control de tiempo de espera.
-
 import requests
 import os
 from config.settings import settings
@@ -12,20 +9,19 @@ from tenacity import retry, stop_after_attempt, wait_exponential
 logger = get_logger(__name__)
 
 @retry(stop=stop_after_attempt(3), wait=wait_exponential(multiplier=1, min=2, max=10))
-def convertir_texto_a_audio_openai(texto: str, nombre_archivo: str, voz: str = "alloy") -> str:
+def convertir_texto_a_audio_openai(texto: str, ruta_salida: str, voz: str = "alloy") -> str:
     """
     Convierte texto a voz usando la API de OpenAI TTS y guarda el resultado como archivo .mp3.
 
     Parámetros:
     - texto (str): Texto a convertir en voz.
-    - nombre_archivo (str): Nombre del archivo de salida.
+    - ruta_salida (str): Ruta completa donde guardar el archivo.
     - voz (str): Voz seleccionada (alloy, echo, fable, onyx, nova, shimmer).
 
     Retorna:
     - str: Ruta al archivo generado o "" si ocurre un error.
     """
-    ruta_audio = os.path.join("assets/audio", nombre_archivo)
-    os.makedirs(os.path.dirname(ruta_audio), exist_ok=True)
+    os.makedirs(os.path.dirname(ruta_salida), exist_ok=True)
 
     headers = {
         "Authorization": f"Bearer {settings.OPENAI_API_KEY}"
@@ -42,11 +38,11 @@ def convertir_texto_a_audio_openai(texto: str, nombre_archivo: str, voz: str = "
         response = requests.post("https://api.openai.com/v1/audio/speech", headers=headers, json=data, timeout=30)
         response.raise_for_status()
 
-        with open(ruta_audio, "wb") as f:
+        with open(ruta_salida, "wb") as f:
             f.write(response.content)
 
-        logger.info(f"✅ Audio generado con OpenAI en: {ruta_audio}")
-        return ruta_audio
+        logger.info(f"✅ Audio generado con OpenAI en: {ruta_salida}")
+        return ruta_salida
 
     except requests.HTTPError as e:
         if e.response.status_code == 429:

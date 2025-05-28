@@ -1,86 +1,107 @@
-// File: frontend/assets/js/modules/pages/dashboard.js
+/* ---------------------------------------------------------------------------
+  frontend/assets/js/modules/pages/dashboard.js
+  Controla la vista de gestión de perfiles infantiles en dashboard.html
+---------------------------------------------------------------------------
+  ► 1. Verifica autenticación (cuentix_token)
+  ► 2. Obtiene perfiles infantiles desde el backend (/api/profiles)
+  ► 3. Renderiza tarjetas dinámicas por perfil con opciones de eliminar/usar
+  ► 4. Elimina perfiles con confirmación visual (SweetAlert2)
+  ► 5. Guarda perfil activo en localStorage (profile_id)
+--------------------------------------------------------------------------- */
 
-import { getToken } from '../auth.js';
+import { apiClient } from '../api.js';
+import { mostrarFeedback } from '../utils/showFeedback.js';
 
-export function initPage() {
-  const perfilContainer = document.getElementById('perfil-listado');
-  const token = getToken();
-
+/** Verifica si hay token. Si no, redirige al login absoluto */
+function verificarAutenticacion() {
+  const token = localStorage.getItem('cuentix_token');
   if (!token) {
     window.location.href = '/pages/login.html';
-    return;
   }
-
-  fetch('http://localhost:5000/api/profiles', {
-    headers: {
-      'Authorization': `Bearer ${token}`
-    }
-  })
-    .then(res => res.json())
-    .then(data => {
-      if (!Array.isArray(data)) {
-        perfilContainer.innerHTML = '<p>No se pudieron cargar los perfiles.</p>';
-        return;
-      }
-
-      if (data.length === 0) {
-        perfilContainer.innerHTML = '<p>No hay perfiles aún. Crea uno para comenzar.</p>';
-        return;
-      }
-
-      perfilContainer.innerHTML = '';
-      data.forEach(perfil => {
-        const card = document.createElement('div');
-        card.className = 'perfil-card';
-        card.innerHTML = `
-          <img src="${perfil.avatar_url}" alt="Avatar de ${perfil.nombre}" class="perfil-avatar" />
-          <h4>${perfil.nombre}</h4>
-          <p>Edad: ${perfil.edad}</p>
-          <div class="perfil-card-actions">
-            <button class="btn btn-primary" onclick="seleccionarPerfil('${perfil.id}')">Elegir</button>
-            <button class="btn btn-danger" onclick="eliminarPerfil('${perfil.id}')">Eliminar</button>
-          </div>
-
-        `;
-        perfilContainer.appendChild(card);
-      });
-    })
-    .catch(err => {
-      console.error('[dashboard.js] Error al obtener perfiles:', err);
-      perfilContainer.innerHTML = '<p>Error al cargar perfiles.</p>';
-    });
 }
 
-// Seleccionar perfil y continuar
-window.seleccionarPerfil = function (perfilId) {
-  localStorage.setItem('profile_id', perfilId);
-  window.location.href = '/pages/wizard.html';
-};
+/** Inicializa la página dashboard.html */
+export function initPage() {
+  verificarAutenticacion();
+  obtenerPerfiles();
+}
 
-// Eliminar perfil con confirmación
-window.eliminarPerfil = async function (perfilId) {
-  const confirmar = confirm('¿Estás seguro de que deseas eliminar este perfil? Esta acción no se puede deshacer.');
-  if (!confirmar) return;
+/** Llama al backend y renderiza los perfiles del adulto */
+async function obtenerPerfiles() {
+  const contenedor = document.getElementById('perfil-listado');
+  contenedor.innerHTML = '<p>Cargando perfiles...</p>';
 
-  const token = getToken();
   try {
-    const res = await fetch(`http://localhost:5000/api/profiles/${perfilId}`, {
-      method: 'DELETE',
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    });
+    const { data: perfiles } = await apiClient.get('/profiles');
 
-    if (res.ok) {
-      alert('Perfil eliminado correctamente.');
-      location.reload(); // recarga la vista
-    } else {
-      const data = await res.json();
-      alert(data?.error || 'No se pudo eliminar el perfil.');
+    if (!perfiles.length) {
+      contenedor.innerHTML = '<p class="text-muted">Aún no tienes perfiles creados.</p>';
+      return;
     }
 
+    contenedor.innerHTML = perfiles.map(perfil => `
+      <div class="perfil-card">
+        <div class="perfil-avatar">
+          <img src="${perfil.avatar_url || '/assets/img/default-avatar.png'}" alt="Avatar" />
+        </div>
+        <div class="perfil-card-info">
+          <h5>${perfil.nombre}</h5>
+          <p>Edad: ${perfil.edad}</p>
+        </div>
+        <div class="perfil-card-actions">
+          <button class="btn btn-primary usar-btn" data-id="${perfil.id}">Usar</button>
+          <button class="btn btn-danger eliminar-btn" data-id="${perfil.id}">Eliminar</button>
+        </div>
+      </div>
+    `).join('');
+
   } catch (err) {
-    console.error('[dashboard.js] Error al eliminar perfil:', err);
-    alert('Hubo un problema al intentar eliminar el perfil.');
+    console.error('[dashboard] Error al obtener perfiles:', err);
+    mostrarFeedback('error', 'Error de conexión', 'No se pudieron cargar los perfiles.');
   }
-};
+}
+
+/** Delegación de eventos para botones dentro del contenedor */
+document.addEventListener('click', (e) => {
+  const id = e.target.dataset.id;
+  if (!id) return;
+
+  if (e.target.classList.contains('usar-btn')) {
+    seleccionarPerfil(id);
+  } else if (e.target.classList.contains('eliminar-btn')) {
+    eliminarPerfil(id);
+  }
+});
+
+/** Guarda el perfil seleccionado y redirige (flujo post-login) */
+function seleccionarPerfil(profileId) {
+  localStorage.setItem('cuentix_profile_id', profileId);
+  mostrarFeedback('success', 'Perfil seleccionado', 'Redirigiendo...');
+  setTimeout(() => {
+    window.location.href = 'generate.html';
+  }, 1500);
+}
+
+/** Elimina un perfil infantil con confirmación visual y error específico */
+async function eliminarPerfil(profileId) {
+  const confirmacion = await Swal.fire({
+    title: '¿Eliminar perfil?',
+    text: 'Esta acción no se puede deshacer.',
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonText: 'Sí, eliminar',
+    cancelButtonText: 'Cancelar'
+  });
+
+  if (!confirmacion.isConfirmed) return;
+
+  try {
+    await apiClient.delete(`/profiles/${profileId}`);
+    mostrarFeedback('success', 'Perfil eliminado', 'Actualizando lista...');
+    obtenerPerfiles();
+  } catch (err) {
+    console.error('[dashboard] Error al eliminar perfil:', err);
+    const msg = err.response?.data?.error || 'No se pudo eliminar el perfil';
+    mostrarFeedback('error', 'Error', msg);
+  }
+}

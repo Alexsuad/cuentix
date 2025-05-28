@@ -307,6 +307,17 @@ button {
   /* Si necesitas un estilo base mínimo para todos los buttons sin clases Bootstrap, va aquí */
 }
 
+/* Estilos globales para formularios validados */
+.was-validated .form-control:invalid,
+.was-validated .form-check-input:invalid {
+  border-color: var(--clr-error);
+}
+
+.invalid-feedback {
+  font-size: 0.9rem;
+  color: var(--clr-error);
+}
+
 
 /* Estilos para imágenes y videos */
 img,

@@ -1,12 +1,16 @@
 # === Entornos Virtuales y Configuraciones de Editor ===
 .vscode/
+.venv/
+venv/
 backend/venv/
 frontend/venv/
+.idea/
 
 # === Caché y archivos temporales de Python ===
 __pycache__/
 *.py[cod]
 *.pyo
+*.pyd
 
 # === Archivos ocultos o innecesarios del sistema ===
 *.DS_Store
@@ -21,28 +25,50 @@ Thumbs.db
 
 # === Cachés de pruebas y notebooks ===
 .pytest_cache/
+.mypy_cache/
 .ipynb_checkpoints/
+.cache/
+.local/
+
+# === Archivos multimedia grandes generados automáticamente ===
+*.mp3
+*.wav
+*.zip
+*.tar.gz
+*.mp4
+*.mov
+*.avi
+*.mkv
+*.webm
+*.srt
+
+# === Carpetas internas de IA (generación automática) ===
+assets/audio/
+assets/images/
+assets/subtitles/
+assets/videos/
+assets/text/
 
 # === Salidas de producción o compilación (opcional) ===
 /dist/
 /build/
 
-# === Archivos binarios o multimedia temporales ===
-*.mp3
-*.wav
-*.zip
-*.tar.gz
-
-# === Assets generados automáticamente (si se aplican) ===
-# Descomentar si usas bundlers que generen contenido
-# /frontend/assets/css/*.min.css
-# /frontend/assets/js/*.min.js
-
-# === Asegurar que tus assets reales NO se ignoren ===
+# === Frontend: Asegurar que NO se ignoren assets reales ===
 !frontend/assets/
 !frontend/assets/css/
 !frontend/assets/js/
 !frontend/assets/img/
 !frontend/assets/js/**/*.js
 !frontend/assets/css/**/*.css
+
+# === Archivos de notas internas o temporales ===
 Notas_Integracion.md
+*.draft.md
+*.old.md
+
+# === Archivos no rastreados actualmente ===
+pages_backup/
+scripts/
+run_dev.py
+start_frontend_server.sh
+venv_backup/

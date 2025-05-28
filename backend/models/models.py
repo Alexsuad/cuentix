@@ -52,3 +52,16 @@ class ChildProfile(Base):
             "adulto_email": self.adulto_email,
             "created_at": self.created_at.isoformat()
         }
+
+# ────────────────────────────────────────────────────────────────────
+# Modelo de Usuario Adulto – tabla 'users'
+# ────────────────────────────────────────────────────────────────────
+
+class User(Base):
+    __tablename__ = "users"
+
+    id = Column(String, primary_key=True, default=lambda: str(uuid.uuid4()))
+    nombre = Column(String, nullable=False)
+    correo = Column(String, unique=True, nullable=False)
+    contraseña = Column(String, nullable=False)
+    fecha_registro = Column(DateTime, default=datetime.utcnow)

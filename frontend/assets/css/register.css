@@ -1,0 +1,16 @@
+/* ─────────────────────────────────────────────────────────────
+   File: frontend/assets/css/register.css
+   Descripción: Estilos específicos para la página de registro
+────────────────────────────────────────────────────────────── */
+
+/* Estilo de la barra de fortaleza de contraseña */
+.password-strength .progress {
+    height: 8px;
+    border-radius: 5px;
+    overflow: hidden;
+    background-color: #e9ecef;
+}
+
+.password-strength .progress-bar {
+    transition: width 0.3s ease;
+}

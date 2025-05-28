@@ -27,7 +27,7 @@ function initPage() {
             resetStates();
             loading.hidden = false;
 
-            const { data } = await apiClient.get('/api/stories/history');
+            const { data } = await apiClient.get('/stories/history');
 
             loading.hidden = true;
 

@@ -2,14 +2,15 @@
     frontend/assets/js/modules/pages/login.js
     Controla el formulario de inicio de sesión en login.html
     ---------------------------------------------------------------------------
-    ► 1. Importa la función loginUsuario() desde api.js  (capa de comunicación)
-    ► 2. Valida el formulario con HTML5  + clases Bootstrap "was-validated"
+    ► 1. Importa la función loginUsuario() desde api.js (capa de comunicación)
+    ► 2. Valida el formulario con HTML5 + clases Bootstrap "was-validated"
     ► 3. Si el backend confirma, guarda el JWT en localStorage → cuentix_token
-    ► 4. Maneja errores con SweetAlert2 y marca los <input> como inválidos
+    ► 4. Muestra feedback visual con SweetAlert2 y marca los <input> inválidos
 ---------------------------------------------------------------------------- */
 
-import { loginUsuario } from '../../api.js';   // ruta relativa: 2 niveles arriba
-import Swal from 'sweetalert2';               // SweetAlert2 ya está cargado vía CDN
+import { loginUsuario } from '../api.js';
+
+// ⚠️ No importar SweetAlert2 aquí: ya se carga desde CDN → variable global: Swal
 
 /**  Función que main.js ejecuta automáticamente cuando detecta login.html */
 export function initPage() {
@@ -27,25 +28,22 @@ export function initPage() {
   // --- 2. Listener submit --------------------------------------------------
   form.addEventListener('submit', async (evt) => {
     evt.preventDefault();   // Evita recarga de página
-    evt.stopPropagation();  // Frenamos burbujeo (Bootstrap)
+    evt.stopPropagation();  // Detiene propagación del evento
 
-    // 2-A. Validación nativa HTML5
+    // Validación HTML5
     if (!form.checkValidity()) {
-      form.classList.add('was-validated'); // activa estilos de error de Bootstrap
-      return;                              // aborta si hay errores
+      form.classList.add('was-validated');
+      return;
     }
 
-    // 2-B. Limpiamos estados de error previos
-    [emailInput, passwordInput].forEach(el => {
-      el.classList.remove('is-invalid');
-      el.parentElement.querySelector('.invalid-feedback')?.classList.remove('d-block');
-    });
+    // Limpiar estados previos
+    limpiarInputs();
 
-    // --- 3. Llamada al backend a través de api.js --------------------------
-    const ok = await loginUsuario(emailInput.value.trim(), passwordInput.value);
+    // --- 3. Llamada a loginUsuario (con backend) ---------------------------
+    const resultado = await loginUsuario(emailInput.value.trim(), passwordInput.value);
 
-    if (ok) {
-      /* Login correcto ➜ feedback y redirección */
+    if (resultado === true) {
+      // ✔️ Login exitoso ➜ mostrar feedback y redirigir
       Swal.fire({
         icon: 'success',
         title: '¡Bienvenido/a!',
@@ -54,18 +52,19 @@ export function initPage() {
         showConfirmButton: false
       });
 
-      setTimeout(() => window.location.href = 'dashboard.html', 1600);
+      setTimeout(() => {
+        window.location.href = 'dashboard.html';
+      }, 1600);
       return;
     }
 
-    /* Si la función devolvió false significa credenciales incorrectas */
+    // ❌ Login fallido ➜ mostrar error específico
     marcarInputsInvalidos();
-    mostrarError('Correo o contraseña incorrectos.');
+    mostrarError(resultado || 'Credenciales incorrectas.');
   });
 
   // --- 4. Helpers ----------------------------------------------------------
 
-  /** Muestra alerta de error genérica */
   function mostrarError(mensaje) {
     Swal.fire({
       icon: 'error',
@@ -75,11 +74,17 @@ export function initPage() {
     });
   }
 
-  /** Añade la clase .is-invalid a email y password */
   function marcarInputsInvalidos() {
     [emailInput, passwordInput].forEach(el => {
       el.classList.add('is-invalid');
       el.parentElement.querySelector('.invalid-feedback')?.classList.add('d-block');
+    });
+  }
+
+  function limpiarInputs() {
+    [emailInput, passwordInput].forEach(el => {
+      el.classList.remove('is-invalid');
+      el.parentElement.querySelector('.invalid-feedback')?.classList.remove('d-block');
     });
   }
 }

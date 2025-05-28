@@ -72,3 +72,5 @@ scripts/
 run_dev.py
 start_frontend_server.sh
 venv_backup/
+
+*Zone.Identifier

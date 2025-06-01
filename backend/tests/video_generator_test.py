@@ -1,57 +1,99 @@
-# backend/tests/video_generator_test.py
+# ──────────────────────────────────────────────────────────────────────────────
+# File: backend/tests/video_generator_test.py
+# Descripción: Prueba de integración para una escena individual del cuento.
+# Genera imagen, audio y subtítulos de una sola escena y ensambla un video sincronizado.
+# Esta prueba no se usa en el MVP de audio único, pero es útil para depuración modular.
+# ──────────────────────────────────────────────────────────────────────────────
 
-import os
-import numpy as np
-from moviepy import ImageClip, AudioFileClip, TextClip, CompositeVideoClip
-from moviepy.video.fx import resize, margin  # ✅ Importación correcta en MoviePy 2.x
+import sys
+import uuid
+from pathlib import Path
 
-# Ruta del archivo de audio (ya debe existir)
-RUTA_AUDIO = "assets/audio/test.mp3"
+# Ajuste de sys.path para permitir importar desde /backend
+backend_dir = str(Path(__file__).resolve().parents[1])
+sys.path.insert(0, backend_dir)
 
-# Verificar existencia del audio
-if not os.path.exists(RUTA_AUDIO):
-    print(f"❌ Audio no encontrado: {RUTA_AUDIO}")
-    exit(1)
+# Importaciones del sistema Cuentix
+from config.settings import settings
+from utils.logger import get_logger
+from core.processors.image_generator import ImageGenerator
+from core.processors.audio_generator import AudioGenerator
+from core.processors.subtitles_generator import SubtitlesGenerator
+from core.processors.subtitles_utils import srt_to_json_simple
+from core.processors.video_generator_sync import crear_video_sincronizado
 
-# Crear imagen blanca de fondo (numpy array)
-imagen_array = np.ones((720, 1280, 3), dtype=np.uint8) * 255
-imagen_clip = ImageClip(imagen_array).set_duration(3)  # Clip de 3 segundos
+logger = get_logger(__name__)
 
-# Cargar audio
-audio_clip = AudioFileClip(RUTA_AUDIO)
+# ──────────────────────────────────────────────────────────────────────────────
+# Bloque principal de prueba
+# ──────────────────────────────────────────────────────────────────────────────
+if __name__ == "__main__":
+    logger.info("🧪 Iniciando prueba de generación de escena individual...")
 
-# Asignar audio y redimensionar imagen a 720p
-imagen_clip = resize.resize(
-    imagen_clip.with_duration(audio_clip.duration)
-               .with_audio(audio_clip),
-    height=720
-)
+    # Texto de ejemplo para una escena de prueba
+    escena_texto = "Luna era una hada con alas de cristal. Vivía en una nube donde llovían caramelos."
 
-# Crear subtítulo
-subtitulo = TextClip(
-    text="Esto es una prueba",
-    font="DejaVuSans-Bold",      # Asegúrate de que esté instalada o cámbiala
-    font_size=30,
-    color="white",
-    method="caption",
-    size=(1080, None)
-).with_duration(audio_clip.duration) \
- .with_position(("center", "bottom"))
+    # ID único para nombrar los archivos de esta ejecución
+    scene_id = uuid.uuid4().hex
 
-# Añadir margen inferior
-subtitulo = margin.margin(subtitulo, bottom=30)
+    # Construcción de rutas absolutas usando settings del sistema
+    image_path = Path(settings.IMAGES_DIR) / f"test_img_{scene_id}.png"
+    audio_path = Path(settings.AUDIO_DIR) / f"test_audio_{scene_id}.mp3"
+    sub_path = Path(settings.SUBTITLES_DIR) / f"test_sub_{scene_id}.srt"
+    video_path = Path(settings.VIDEOS_DIR) / f"test_video_{scene_id}.mp4"
 
-# Componer el video final
-video = CompositeVideoClip([imagen_clip, subtitulo])
+    # Instanciar generadores de imagen, audio y subtítulos
+    img_gen = ImageGenerator()
+    audio_gen = AudioGenerator(motor=settings.TTS_ENGINE)
+    sub_gen = SubtitlesGenerator(model_size=settings.WHISPER_MODEL_SIZE)
 
-# Definir ruta de salida
-ruta_salida = "assets/videos/test_clip.mp4"
-os.makedirs(os.path.dirname(ruta_salida), exist_ok=True)
+    # Paso 1: Generar imagen (prompt adaptado para DALL·E)
+    logger.info("1️⃣ Generando imagen...")
+    prompt = "Ilustración para niños en estilo dibujo animado: una nube flotante hecha de caramelos sobre un cielo azul"
+    imagen = img_gen.generate_image(prompt, str(image_path))
 
-# Guardar el archivo de video
-video.write_videofile(ruta_salida, fps=24)
+    if not imagen:
+        logger.error("❌ Fallo en la generación de la imagen.")
+        sys.exit(1)
+    logger.info(f"✅ Imagen generada: {image_path}")
 
-# Cerrar audio para liberar recursos
-audio_clip.close()
+    # Paso 2: Generar audio
+    logger.info("2️⃣ Generando audio...")
+    audio = audio_gen.generate_audio(escena_texto, str(audio_path))
 
-print("✅ Video de prueba generado:", ruta_salida)
+    if not audio:
+        logger.error("❌ Fallo en la generación del audio.")
+        sys.exit(1)
+    logger.info(f"✅ Audio generado: {audio_path}")
+
+    # Paso 3: Generar subtítulos en formato SRT
+    logger.info("3️⃣ Generando subtítulos...")
+    subtitulo_ok = sub_gen.generar_subtitulos(str(audio_path), str(sub_path))
+
+    if not subtitulo_ok:
+        logger.error("❌ Fallo en la generación de los subtítulos.")
+        sys.exit(1)
+    logger.info(f"✅ Subtítulos generados: {sub_path}")
+
+    # Paso 4: Convertir subtítulos SRT a estructura JSON
+    logger.info("4️⃣ Convirtiendo subtítulos a JSON...")
+    subtitulos_json = srt_to_json_simple(str(sub_path))
+
+    if not subtitulos_json:
+        logger.error("❌ Fallo al convertir subtítulos a JSON.")
+        sys.exit(1)
+    logger.info(f"✅ Subtítulos convertidos a JSON. Total: {len(subtitulos_json)} bloques.")
+
+    # Paso 5: Ensamblar video final con imagen, audio y subtítulos
+    logger.info("5️⃣ Ensamblando video final...")
+    video_final = crear_video_sincronizado(
+        image_paths=[str(image_path)],
+        audio_path=str(audio_path),
+        subtitles_json=subtitulos_json,
+        output_path=str(video_path)
+    )
+
+    if not video_final:
+        logger.error("❌ Fallo en el ensamblaje del video.")
+        sys.exit(1)
+    logger.info(f"🎬 Video final generado exitosamente: {video_path}")

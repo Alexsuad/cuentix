@@ -1,62 +1,143 @@
-# core/processors/subtitles_generator.py
+# ──────────────────────────────────────────────────────────────────────────────
+# File: backend/core/processors/subtitles_generator.py
+# Propósito: Generar subtítulos (.srt) a partir de un archivo de audio
+#            empleando Whisper. Permite elegir tamaño del modelo ("tiny",
+#            "base", "small", "medium", "large") y reutiliza la instancia
+#            para evitar recargas innecesarias.
+# ──────────────────────────────────────────────────────────────────────────────
 
-# Este módulo usa Whisper para transcribir archivos de audio y generar subtítulos en formato .srt.
-# Usa el modelo local de Whisper especificado en la variable de entorno WHISPER_MODEL_SIZE.
+# Importaciones estándar y del proyecto
+from pathlib import Path
+import whisper  # Modelo de reconocimiento de voz de OpenAI
+from utils.logger import get_logger  # Logger centralizado
+from config.settings import settings  # Configuración general del sistema
 
-import os
-import whisper
-from utils.logger import get_logger
-from config.settings import settings
+logger = get_logger(__name__)  # Inicializa el logger para este módulo
 
-logger = get_logger(__name__)
-
+# ──────────────────────────────────────────────────────────────────────────────
+# Clase principal: SubtitlesGenerator
+# Encargada de transcribir audio a texto y generar un archivo de subtítulos.
+# ──────────────────────────────────────────────────────────────────────────────
 class SubtitlesGenerator:
     """
-    Clase encargada de convertir audio a subtítulos usando Whisper (modelo local).
+    Transcribe un archivo de audio y genera subtítulos en formato .srt.
+
+    Atributos:
+    -----------
+    model_size : str
+        Tamaño del modelo Whisper a utilizar.
+    model : whisper.Whisper
+        Instancia del modelo Whisper ya cargada (se reutiliza entre llamadas).
+
+    Métodos:
+    --------
+    generar_subtitulos(ruta_audio, ruta_salida) -> str
+        Genera un archivo .srt desde un audio. Retorna la ruta generada o "" si falla.
     """
 
-    def __init__(self):
-        self.model_size = settings.WHISPER_MODEL_SIZE or "base"
-        logger.info(f"🧠 Cargando modelo Whisper ({self.model_size})...")
-        try:
-            self.model = whisper.load_model(self.model_size)
-        except Exception as e:
-            logger.error(f"❌ No se pudo cargar el modelo Whisper: {e}")
-            raise
+    # Caché de modelos cargados para evitar duplicar consumo de memoria
+    _model_cache: dict[str, whisper.Whisper] = {}
 
-    def generar_subtitulo(self, ruta_audio: str, ruta_salida: str) -> str:
+    def __init__(self, model_size: str | None = None) -> None:
         """
-        Transcribe un archivo de audio a subtítulos en formato SRT.
+        Inicializa la clase y carga (o reutiliza) el modelo Whisper indicado.
+
+        Parámetros:
+        ------------
+        model_size : str | None
+            Tamaño del modelo a usar. Si no se indica, se toma de settings.
         """
-        try:
-            if not os.path.exists(ruta_audio):
-                raise FileNotFoundError(f"El archivo de audio no existe: {ruta_audio}")
-            
-            ruta_audio = os.path.abspath(ruta_audio)
-            logger.info(f"🔊 Transcribiendo archivo '{ruta_audio}' con modelo Whisper '{self.model_size}'...")
-            resultado = self.model.transcribe(ruta_audio, task="transcribe")
+        self.model_size: str = model_size or settings.WHISPER_MODEL_SIZE or "base"
 
-            os.makedirs(os.path.dirname(ruta_salida) or ".", exist_ok=True)
-            with open(ruta_salida, "w", encoding="utf-8") as f:
-                for i, segmento in enumerate(resultado["segments"]):
-                    inicio = self._formatear_tiempo(segmento["start"])
-                    fin = self._formatear_tiempo(segmento["end"])
-                    texto = segmento["text"].strip()
-                    f.write(f"{i+1}\n{inicio} --> {fin}\n{texto}\n\n")
+        if self.model_size in SubtitlesGenerator._model_cache:
+            # Si el modelo ya fue cargado previamente, se reutiliza
+            self.model = SubtitlesGenerator._model_cache[self.model_size]
+            logger.info(f"🧠 Whisper «{self.model_size}» reutilizado desde caché.")
+        else:
+            try:
+                # Si el modelo no está en caché, se carga desde cero
+                logger.info(f"🧠 Cargando Whisper «{self.model_size}» …")
+                self.model = whisper.load_model(self.model_size)
+                SubtitlesGenerator._model_cache[self.model_size] = self.model
+                logger.info("✅ Modelo cargado correctamente.")
+            except Exception as e:
+                # Error crítico si no se puede cargar el modelo
+                logger.error(f"❌ No se pudo cargar Whisper ({self.model_size}): {e}")
+                raise RuntimeError(f"Whisper no disponible: {e}") from e
 
-            logger.info(f"✅ Subtítulo generado en: {ruta_salida}")
-            return ruta_salida
+    def generar_subtitulos(self, ruta_audio: str, ruta_salida: str) -> str:
+        """
+        Genera un archivo .srt con subtítulos a partir de un audio.
 
-        except Exception as e:
-            logger.error(f"❌ Error al generar subtítulo: {e}")
+        Parámetros:
+        ------------
+        ruta_audio : str
+            Ruta absoluta al archivo de audio (formato .mp3, .wav, etc.).
+        ruta_salida : str
+            Ruta absoluta donde se guardará el archivo .srt generado.
+
+        Retorna:
+        ---------
+        str
+            Ruta del archivo generado o "" si ocurrió un error.
+        """
+        ruta_audio = Path(ruta_audio)
+        ruta_salida = Path(ruta_salida)
+
+        # Validar que el archivo de audio existe
+        if not ruta_audio.is_file():
+            logger.error(f"❌ Audio no encontrado: {ruta_audio}")
             return ""
 
-    def _formatear_tiempo(self, segundos: float) -> str:
+        try:
+            # Transcripción del audio usando Whisper
+            logger.info("🎧 Transcribiendo audio…")
+            resultado = self.model.transcribe(str(ruta_audio), verbose=False)
+
+            # Asegurar que el directorio de salida exista
+            ruta_salida.parent.mkdir(parents=True, exist_ok=True)
+
+            # Escritura del archivo .srt con formato estándar
+            logger.info(f"💾 Guardando SRT en {ruta_salida}…")
+            with ruta_salida.open("w", encoding="utf-8") as f:
+                for i, seg in enumerate(resultado["segments"], start=1):
+                    try:
+                        f.write(
+                            f"{i}\n"
+                            f"{self._fmt(seg['start'])} --> {self._fmt(seg['end'])}\n"
+                            f"{seg['text'].strip()}\n\n"
+                        )
+                    except Exception as seg_e:
+                        # Si falla un segmento, se omite y se continúa
+                        logger.warning(f"⚠️ Segmento {i} omitido: {seg_e}")
+
+            logger.info("✅ Subtítulos generados correctamente.")
+            return str(ruta_salida)
+
+        except Exception as e:
+            # Error general de transcripción o escritura
+            logger.error(f"❌ Error durante la transcripción: {e}")
+            return ""
+
+    generar_subtitulo = generar_subtitulos  # Alias compatible con otros módulos
+
+    @staticmethod
+    def _fmt(segundos: float) -> str:
         """
-        Convierte segundos a formato SRT hh:mm:ss,ms
+        Convierte un número de segundos a formato SRT (hh:mm:ss,mmm).
+
+        Parámetros:
+        ------------
+        segundos : float
+            Tiempo en segundos.
+
+        Retorna:
+        ---------
+        str
+            Tiempo formateado como cadena compatible con SRT.
         """
         horas = int(segundos // 3600)
         minutos = int((segundos % 3600) // 60)
-        segundos_rest = int(segundos % 60)
-        milisegundos = int((segundos - int(segundos)) * 1000)
-        return f"{horas:02}:{minutos:02}:{segundos_rest:02},{milisegundos:03}"
+        seg = int(segundos % 60)
+        ms = int((segundos - int(segundos)) * 1000)
+        return f"{horas:02}:{minutos:02}:{seg:02},{ms:03}"

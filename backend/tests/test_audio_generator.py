@@ -1,5 +1,17 @@
 # tests/test_audio_generator.py
 
+# ──────────────────────────────────────────────────────────────
+# File: tests/test_audio_generator.py
+# Descripción: Prueba unitaria automatizada para validar el módulo
+# AudioGenerator del sistema Cuentix. Verifica que, al generar un
+# archivo .mp3 con texto de entrada, se cree una salida válida:
+# - El archivo se guarda correctamente
+# - Tiene contenido (>1 KB)
+# - Tiene extensión .mp3
+# Compatible con motores como gTTS, ElevenLabs o DeepSeek, según settings.
+# ──────────────────────────────────────────────────────────────
+
+
 # Prueba unitaria para verificar la generación de audio con los motores configurados (gTTS, OpenAI, ElevenLabs)
 
 import os

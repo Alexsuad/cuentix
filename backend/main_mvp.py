@@ -1,164 +1,109 @@
-# ──────────────────────────────────────────────────────────────────────────────
+# ────────────────────────────────────────────────────────────────────────────
 # File: backend/main_mvp.py
-# Descripción: Script maestro para generar un cuento completo (texto, audio,
-# subtítulos, imágenes y video) usando los módulos del backend, con flujo lineal.
-# Útil para pruebas E2E del pipeline de generación.
-# ──────────────────────────────────────────────────────────────────────────────
+# Descripción: Script principal para ejecutar el flujo completo del MVP de Cuentix.
+# Genera un video-cuento infantil con texto, imágenes, audio, subtítulos y ensamblaje.
+# Utiliza datos de prueba desde JSON y muestra logs detallados del proceso.
+# ────────────────────────────────────────────────────────────────────────────
 
 import os
 import sys
+import json
 from pathlib import Path
-from concurrent.futures import ThreadPoolExecutor
+import logging
 
-# Ajuste de sys.path para importar módulos del proyecto desde la raíz de backend
-current_dir = os.path.dirname(os.path.abspath(__file__))
-backend_dir = os.path.join(current_dir, '..')
-sys.path.insert(0, backend_dir)
-
-# Importaciones del sistema
-from config.settings import settings
-from core.processors.text_generator import TextGenerator
-from core.processors.audio_generator import AudioGenerator
-from core.processors.subtitles_generator import SubtitlesGenerator
-from core.processors.image_generator import ImageGenerator
-from moviepy.editor import concatenate_videoclips, ImageClip, AudioFileClip
-from utils.helpers import generar_id_unico
 from utils.logger import get_logger
-from utils.prompts import construir_prompt_personalizado
+from config.settings import settings
 
 logger = get_logger(__name__)
+import core.processors.text_generator as tg
+logger.debug(f"📂 Usando text_generator desde: {tg.__file__}")
 
-# Asegurar directorios
-os.makedirs(settings.AUDIO_DIR, exist_ok=True)
-os.makedirs(settings.SUBTITLES_DIR, exist_ok=True)
-os.makedirs(settings.IMAGES_DIR, exist_ok=True)
-os.makedirs(settings.VIDEOS_DIR, exist_ok=True)
+from pydub import AudioSegment
+import pysrt
 
-# Inicializar módulos
-text_generator = TextGenerator()
-audio_generator = AudioGenerator(motor=settings.TTS_ENGINE)
-subtitle_generator = SubtitlesGenerator()
-image_generator = ImageGenerator()
+sys.path.append(str(Path(__file__).resolve().parent))
 
-# Procesar una escena
-def process_scene(scene_text: str, scene_index: int, total_scenes: int, user_data: dict) -> tuple:
-    if not scene_text.strip():
-        return None, None
+from core.processors.text_generator import TextGenerator
+from core.validators.campos_requeridos import CAMPOS_REQUERIDOS
+from core.processors.image_generator import ImageGenerator
+from core.processors.audio_generator import AudioGenerator
+from core.processors.subtitles_generator import SubtitlesGenerator, combinar_srt
+from core.processors.video_generator_sync import ensamblar_video
 
-    scene_id = generar_id_unico()
-    logger.info(f"🎬 Escena {scene_index + 1}/{total_scenes}: {scene_text[:50]}...")
+def cargar_datos_prueba() -> dict:
+    json_path = Path(__file__).parent / "tests" / "test_user_data.json"
+    if not json_path.exists():
+        logger.error("❌ Archivo de datos de prueba no encontrado: %s", json_path)
+        return {}
+    with open(json_path, "r", encoding="utf-8") as f:
+        datos = json.load(f)
+    logger.debug("DEBUG – Contenido cargado desde JSON: %s", datos)
+    for campo in CAMPOS_REQUERIDOS:
+        if campo not in datos:
+            logger.error("❌ Campo obligatorio faltante en test_user_data.json: %s", campo)
+            return {}
+    return datos
 
-    audio_path = Path(settings.AUDIO_DIR) / f"{scene_id}.mp3"
-    subtitle_path = Path(settings.SUBTITLES_DIR) / f"{scene_id}.srt"
-    image_path = Path(settings.IMAGES_DIR) / f"{scene_id}.png"
+def unir_audios(audio_paths: list, salida: str) -> str:
+    audio_completo = AudioSegment.empty()
+    for ruta in audio_paths:
+        segmento = AudioSegment.from_file(ruta)
+        audio_completo += segmento
+    audio_completo.export(salida, format="mp3", bitrate="128k")
+    return salida
 
-    # Audio
-    audio = audio_generator.generate_audio(scene_text, str(audio_path))
-    if not audio:
-        logger.error(f"❌ Audio fallido en escena {scene_index + 1}.")
-        return None, None
+def convertir_subtitulos_a_json(srt_file_path: str) -> list:
+    subtitulos = []
+    srt_file = pysrt.open(srt_file_path)
+    for item in srt_file:
+        subtitulos.append({
+            "start": item.start.ordinal / 1000,
+            "end": item.end.ordinal / 1000,
+            "text": item.text
+        })
+    return subtitulos
 
-    # Subtítulo
-    subtitle_generator.generar_subtitulo(audio, str(subtitle_path))
-
-    # Imagen con estilo Cuentix
-    prompt = f"Claymation digital 3D illustration for children: {scene_text}, pastel colors, soft shadows"
-    imagen = image_generator.generate_image(prompt, str(image_path))
-    if not imagen:
-        logger.error(f"❌ Imagen fallida en escena {scene_index + 1}.")
-        return None, None
-
-    # Duración del audio
-    try:
-        clip = AudioFileClip(audio)
-        duration = clip.duration
-        clip.close()
-    except Exception as e:
-        logger.error(f"❌ Duración de audio fallida: {e}")
-        return None, None
-
-    return imagen, duration
-
-# Generación del cuento completo
-
-def generate_full_story_mvp(user_data: dict):
+if __name__ == "__main__":
     logger.info("🚀 Iniciando generación de video-cuento (MVP)...")
 
-    prompt = construir_prompt_personalizado(user_data)
-    texto = text_generator.generate_text(prompt)
-    if not texto or len(texto.strip()) < 50:
-        logger.error("❌ Texto generado inválido.")
-        return None
+    datos_usuario = cargar_datos_prueba()
+    if not datos_usuario:
+        logger.error("❌ No se pudo continuar: datos de entrada inválidos.")
+        sys.exit(1)
 
-    escenas = [p.strip() for p in texto.split("\n") if p.strip()]
+    texto_cuento, escenas = TextGenerator().generar_cuento(datos_usuario)
     if not escenas:
-        logger.error("❌ No hay escenas válidas.")
-        return None
+        logger.error("❌ El cuento no tiene escenas. Abortando.")
+        sys.exit(1)
 
-    resultados = []
-    with ThreadPoolExecutor(max_workers=4) as executor:
-        futures = [executor.submit(process_scene, escena, i, len(escenas), user_data)
-                   for i, escena in enumerate(escenas)]
-        for future in futures:
-            try:
-                img, dur = future.result()
-                if img and dur:
-                    resultados.append({"image_path": img, "duration": dur})
-            except Exception as e:
-                logger.error(f"❌ Error en escena: {e}")
+    audio_gen = AudioGenerator(motor=settings.AUDIO_ENGINE)
+    sub_gen = SubtitlesGenerator(model_size=settings.WHISPER_MODEL_SIZE)
+    image_gen = ImageGenerator()
 
-    if not resultados:
-        logger.error("❌ No se generaron clips válidos.")
-        return None
+    escenas_multimedia = []
 
-    clips = []
-    for r in resultados:
-        try:
-            clip = ImageClip(r["image_path"]).with_duration(r["duration"])
-            clips.append(clip)
-        except Exception as e:
-            logger.error(f"❌ Clip inválido: {e}")
+    for idx, texto in enumerate(escenas):
+        logger.info(f"🎮 Procesando escena {idx+1}...")
+        imagen_path = image_gen.generate_image(texto, str(Path(settings.IMAGES_DIR) / f"scene_{idx+1}.png"))
+        audio_path  = audio_gen.generate_audio(texto, str(Path(settings.AUDIO_DIR)  / f"scene_{idx+1}.mp3"))
+        subs_path   = sub_gen.generar_subtitulo(audio_path, str(Path(settings.SUBTITLES_DIR) / f"scene_{idx+1}.srt"))
+        escenas_multimedia.append({
+            "imagen": imagen_path,
+            "audio": audio_path,
+            "subtitulos": subs_path
+        })
 
-    if not clips:
-        logger.error("❌ No hay clips para ensamblar.")
-        return None
+    image_paths = [e["imagen"] for e in escenas_multimedia]
+    audio_paths = [e["audio"] for e in escenas_multimedia if e["audio"] and Path(e["audio"]).is_file()]
+    sub_paths = [e["subtitulos"] for e in escenas_multimedia if e["subtitulos"] and Path(e["subtitulos"]).is_file()]
 
-    try:
-        video_final = concatenate_videoclips(clips)
-    except Exception as e:
-        logger.error(f"❌ Fallo en concatenación: {e}")
-        return None
+    ruta_srt_completo = settings.BACKEND_DIR / settings.TEXT_DIR / "cuento_completo.srt"
+    combinar_srt(sub_paths, str(ruta_srt_completo), borrar_originales=True)
+    logger.info(f"📄 Subtítulos finales listos en: {ruta_srt_completo}")
 
-    salida = Path(settings.VIDEOS_DIR) / f"{generar_id_unico()}_cuento_final.mp4"
-    try:
-        logger.info(f"💾 Exportando a: {salida}")
-        video_final.write_videofile(
-            str(salida),
-            fps=24,
-            codec="libx264",
-            verbose=False,
-            logger=None
-        )
-        logger.info("✅ Video exportado con éxito.")
-        return str(salida)
-    except Exception as e:
-        logger.error(f"❌ Fallo exportando video: {e}")
-        return None
+    audio_path = unir_audios(audio_paths, settings.BACKEND_DIR / settings.AUDIO_DIR / "audio_completo.mp3")
+    subtitles_json = convertir_subtitulos_a_json(str(ruta_srt_completo))
+    salida_video = ensamblar_video(image_paths, audio_path, subtitles_json, "output/video_final.mp4")
 
-# Ejecución manual
-if __name__ == "__main__":
-    datos_prueba = {
-        "nombre": "Leo",
-        "edad": 5,
-        "personaje_principal": "un valiente caballero",
-        "lugar": "un castillo en las nubes",
-        "objeto_magico": "una espada brillante",
-        "villano": "un dragón dormilón",
-        "tipo_final": "un final feliz con amigos"
-    }
-
-    ruta_video = generate_full_story_mvp(datos_prueba)
-    if ruta_video:
-        logger.info(f"\n🎉 ¡Video generado con éxito!\nRuta: {ruta_video}")
-    else:
-        logger.error("\n❌ El pipeline falló en alguna etapa.")
+    logger.info("✅ Video cuento generado exitosamente en: %s", salida_video)
+    logger.info("🎉 Proceso completo. Puedes reproducir el video generado.")

@@ -3,51 +3,47 @@
 <html lang="es">
 
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Tu video cuento está listo - Cuentix</title>
-  <!-- ··· Estilos del Proyecto ··· -->
-  <!-- Estilo base -->
-  <link rel="stylesheet" href="/assets/css/styles.css" />
-  <!-- Estilo específico de esta página -->
-  <link rel="stylesheet" href="/assets/css/pages/result.css" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tu video cuento está listo - Cuentix</title>
+
+    <link rel="stylesheet" href="/assets/css/styles.css" />
+    <link rel="stylesheet" href="/assets/css/pages/result.css" />
 
 </head>
 
 <body>
 
-  <!-- Header dinámico -->
-  <div id="header-placeholder"></div>
+    <div id="header-placeholder"></div>
 
-  <main class="container">
-    <section class="result-section">
-      <h1>🎉 ¡Tu cuento mágico ya está listo!</h1>
-      <p class="small">Disfrútalo a continuación o compártelo con alguien especial.</p>
+    <main class="container">
+        <section class="result-section">
+            <h1>🎉 ¡Su cuento mágico ya está listo!</h1>
+            <p class="small">Disfrútelo a continuación o compártalo con alguien especial.</p>
 
-      <!-- Video generado -->
-      <div class="video-container">
-        <video id="cuento-video" width="100%" controls poster="/assets/img/placeholder.jpg">
-          Tu navegador no soporta el elemento <code>video</code>.
-        </video>
-      </div>
+            <h2 id="story-title" class="text-2xl font-bold text-center my-4"></h2>
 
-      <!-- Botón de descarga -->
-      <div class="result-actions">
-        <a id="descargar-btn" class="btn btn-primary" href="#" download>
-          Descargar video
-        </a>
-      </div>
-    </section>
-  </main>
+            <div class="video-container flex justify-center items-center my-4">
+                <video id="cuento-video" class="w-full max-w-xl rounded-lg shadow-lg" controls poster="/assets/img/placeholder.jpg">
+                    Su navegador no soporta el elemento <code>video</code>.
+                </video>
+            </div>
 
-  <!-- Footer dinámico -->
-  <div id="footer-placeholder"></div>
+            <div class="result-actions text-center my-4">
+                <a id="descargar-btn" class="btn btn-primary btn-rounded px-6 py-3" href="#" download>
+                    Descargar video
+                </a>
+            </div>
 
-  <!-- ··· Scripts del Proyecto ··· -->
-  <!-- Inicializador general -->
-  <script type="module" src="/assets/js/main.js" defer></script>
-  <!-- Lógica específica para esta página -->
-  <script type="module" src="/assets/js/modules/pages/result.js" defer></script>
+            <div id="story-text-display" class="bg-gray-100 p-6 rounded-lg shadow-inner my-4 max-w-3xl mx-auto text-gray-800">
+                </div>
+        </section>
+    </main>
+
+    <div id="footer-placeholder"></div>
+
+    <script type="module" src="/assets/js/main.js" defer></script>
+    <script type="module" src="/assets/js/modules/pages/result.js" defer></script>
 
 </body>
 

@@ -16,21 +16,27 @@ class Story(Base):
     # 👤 ID del perfil infantil asociado (por ahora texto libre)
     profile_id = Column(String, nullable=True)
 
-    # 🔄 Estado de la historia: pending, generating, completed, failed
+    # 🔄 Estado de la historia: pending, generating, completed, failed, etc.
     status = Column(String, default="pending")
 
     # 🕒 Tiempos de creación y actualización
     created_at = Column(DateTime, default=datetime.utcnow)
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
-    # 📁 Ruta absoluta o URL al archivo de video final
+    # 📁 Ruta absoluta o URL al archivo de video final generado por MoviePy
     video_path = Column(String, nullable=True)
 
-    # ❌ Mensaje de error si la historia falla
+    # 📁 Ruta al archivo .txt con el texto completo del cuento generado
+    story_text_url = Column(String, nullable=True)
+
+    # 🖼️ Ruta a la imagen que se usará como miniatura del cuento
+    thumbnail_url = Column(String, nullable=True)
+
+    # 📝 Ruta al archivo .json con los subtítulos generados por Whisper
+    subtitles_url = Column(String, nullable=True)
+
+    # ❌ Mensaje de error si la historia falla durante alguna etapa del pipeline
     error_message = Column(Text, nullable=True)
-
-
-
 
 
 class ChildProfile(Base):
@@ -52,6 +58,7 @@ class ChildProfile(Base):
             "adulto_email": self.adulto_email,
             "created_at": self.created_at.isoformat()
         }
+
 
 # ────────────────────────────────────────────────────────────────────
 # Modelo de Usuario Adulto – tabla 'users'

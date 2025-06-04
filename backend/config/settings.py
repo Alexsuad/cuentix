@@ -38,6 +38,7 @@ class Settings(BaseSettings):
     OPENAI_PROJECT_ID: str = Field(..., env="OPENAI_PROJECT_ID")
     ELEVENLABS_API_KEY: str = Field(..., env="ELEVENLABS_API_KEY")
     ELEVENLABS_VOICE_ID: str = Field("EXAVITQu4vr4xnSDxMaL", env="ELEVENLABS_VOICE_ID")
+    DEBUG: bool = False
 
     # 🔐 Google Cloud (opcional)
     GOOGLE_CLOUD_PROJECT_ID: Optional[str] = Field(None, env="GOOGLE_CLOUD_PROJECT_ID")
@@ -46,7 +47,8 @@ class Settings(BaseSettings):
     # 🗣️ Motores de IA
     TTS_ENGINE: str = Field("gtts", env="TTS_ENGINE")
     WHISPER_MODEL_SIZE: str = Field("base", env="WHISPER_MODEL_SIZE")
-
+    AUDIO_ENGINE: str = Field("gtts", env="AUDIO_ENGINE")
+    
     # 🌐 API Base (soporte para DeepSeek)
     OPENAI_API_BASE: str = Field(default="https://api.openai.com/v1", env="OPENAI_API_BASE")
 

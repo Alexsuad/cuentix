@@ -1,16 +1,28 @@
-moviepy==2.2.1
-pillow==9.5.0
-openai>=1.14.0
-whisper
-torch
-gtts
+# === BACKEND PRINCIPAL ===
+flask
+flask-cors
+flask-jwt-extended
+sqlalchemy
+passlib
 python-dotenv
 pydantic-settings
-tqdm
+
+# === IA Y GENERACIÓN DE CONTENIDO ===
+openai  # DeepSeek y DALL·E compatibles
+gtts  # Motor de voz alternativo
+elevenlabs  # Motor de voz premium
+requests  # Para APIs externas
+tqdm  # Progreso en CLI
+
+# === MULTIMEDIA Y VIDEO ===
+moviepy==2.2.1
+pillow>=9.0.0
 imageio
 imageio-ffmpeg
 numpy>=1.25.0
-requests
-# Whisper oficial de OpenAI
-git+https://github.com/openai/whisper.git
 
+# === SUBTÍTULOS Y AUDIO ===
+srt  # Manejo de archivos .srt
+torch  # Requisito para Whisper
+# Whisper oficial
+git+https://github.com/openai/whisper.git

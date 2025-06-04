@@ -1,6 +1,16 @@
 # tests/test_text_generator.py
+# ──────────────────────────────────────────────────────────────
+# File: tests/test_text_generator.py
+# Prueba unitaria del generador de texto narrativo basado en DeepSeek.
+# Evalúa que, dada una entrada estructurada (nombre, edad, elementos del cuento),
+# se genere una narración con estructura y contenido coherente.
+#
+# ▶️ Modo de uso:
+# Ejecutar desde la raíz del proyecto con pytest:
+#   pytest tests/test_text_generator.py
+# ──────────────────────────────────────────────────────────────
 
-# Este test verifica que el generador de texto crea un cuento estructurado y no vacío.
+
 
 import pytest
 from core.processors.text_generator import TextGenerator

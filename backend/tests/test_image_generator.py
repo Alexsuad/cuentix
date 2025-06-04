@@ -1,6 +1,16 @@
 # tests/test_image_generator.py
+# ──────────────────────────────────────────────────────────────
+# File: tests/test_image_generator.py
+# Prueba unitaria para verificar que se genera una imagen válida
+# a partir de un texto usando OpenAI DALL·E. Verifica la creación
+# del archivo PNG y su tamaño.
+#
+# ▶️ Modo de uso:
+# Ejecutar desde la raíz del proyecto con pytest:
+#   pytest tests/test_image_generator.py
+# ──────────────────────────────────────────────────────────────
 
-# Prueba unitaria para verificar que se genera una imagen válida a partir de un texto usando OpenAI DALL·E.
+
 
 import os
 from pathlib import Path

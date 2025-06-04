@@ -4,20 +4,33 @@
 # Incluye normalización del prompt, reintentos, y un modo fallback con imagen placeholder.
 # ────────────────────────────────────────────────────────────────────────
 
-import os
-import requests
-import shutil
-from pathlib import Path
-from config.settings import settings
-from openai import OpenAI, BadRequestError, APIError, RateLimitError, AuthenticationError, NotFoundError, PermissionDeniedError, InternalServerError
-from utils.logger import get_logger
-from tenacity import retry, stop_after_attempt, wait_exponential, retry_if_exception_type
+# ╭─────────────────────────────── Importaciones ───────────────────────────────╮
+
+import os                                 # Operaciones del sistema de archivos
+import requests                           # Para descargar imágenes desde URL
+import shutil                             # Para copiar imagen de fallback
+from pathlib import Path                  # Manejo seguro de rutas
+
+from config.settings import settings      # Variables de entorno y configuración global
+from openai import OpenAI, BadRequestError, APIError, RateLimitError, AuthenticationError, NotFoundError, PermissionDeniedError, InternalServerError  # Manejo de errores y cliente de OpenAI
+from utils.logger import get_logger       # Sistema de logging personalizado
+from tenacity import retry, stop_after_attempt, wait_exponential, retry_if_exception_type  # Decorador para reintentos
+
+# ╰─────────────────────────────────────────────────────────────────────────────╯
+
+# ────────────────────────────── Inicialización ────────────────────────────────
 
 logger = get_logger(__name__)
-
 PLACEHOLDER_IMAGE_PATH = Path(settings.PROJECT_ROOT) / "frontend" / "assets" / "img" / "placeholder_cuentix.png"
 
+# ─────────────────────────────── Clase Principal ──────────────────────────────
+
 class ImageGenerator:
+    """
+    Clase encargada de generar ilustraciones infantiles a partir de texto usando la API de DALL·E.
+    Incluye sistema de reintentos, normalización del prompt y uso de imagen de respaldo.
+    """
+
     def __init__(self):
         self.client = OpenAI(api_key=settings.OPENAI_API_KEY)
 
@@ -30,7 +43,18 @@ class ImageGenerator:
         )
     )
     def generate_image(self, texto: str, ruta_salida: str) -> str:
+        """
+        Genera una imagen ilustrativa a partir del texto recibido.
+
+        Parámetros:
+        - texto (str): Descripción narrativa de la escena.
+        - ruta_salida (str): Ruta absoluta donde se guardará la imagen generada.
+
+        Retorna:
+        - str: Ruta del archivo de imagen generado o vacío si falla.
+        """
         try:
+            # Normalizar prompt para evitar errores de codificación
             prompt = texto[:900]
             prompt_limpio = prompt.encode("ascii", "ignore").decode()
             prompt_final = (
@@ -38,10 +62,13 @@ class ImageGenerator:
                 f"{prompt_limpio}, pastel colors, soft shadows, round shapes, expressive faces, Pixar-like style"
             )
             logger.debug(f"📨 Prompt enviado a DALL·E: {prompt_final!r}")
+
+            # Asegurar que el directorio de salida exista
             ruta = Path(ruta_salida)
             ruta.parent.mkdir(parents=True, exist_ok=True)
             logger.info("🖼️ Enviando texto a la API de imagen para generar ilustración...")
 
+            # Solicitud a la API de DALL·E
             response = self.client.images.generate(
                 model="dall-e-3",
                 prompt=prompt_final,
@@ -50,6 +77,7 @@ class ImageGenerator:
                 style="natural"
             )
 
+            # Descargar imagen desde la URL devuelta
             image_url = response.data[0].url
             logger.info(f"📅 Descargando imagen desde URL: {image_url}")
             img_data = requests.get(image_url, timeout=30).content
@@ -61,17 +89,15 @@ class ImageGenerator:
 
         except BadRequestError as e:
             logger.error(f"❌ DALL·E BadRequestError (400): {e.response.json() if e.response else e}")
-            pass
 
         except (APIError, RateLimitError) as e:
             logger.error(f"❌ DALL·E API/RateLimit (después de reintentos): {e}")
-            pass
 
         except Exception as e:
             error_type = type(e).__name__
             logger.error(f"❌ Error ({error_type}) inesperado durante la generación de imagen para texto '{texto[:60]}...': {e}")
-            pass
 
+        # Si todo falla, intentar usar imagen placeholder
         logger.warning("⚠️ Generación de imagen principal fallida. Intentando usar imagen placeholder...")
         try:
             if PLACEHOLDER_IMAGE_PATH.exists():

@@ -1,4 +1,18 @@
 # tests/test_subtitles_generator.py
+# ──────────────────────────────────────────────────────────────
+# File: tests/test_subtitles_generator.py
+# Descripción: Prueba unitaria para validar que el módulo de subtítulos
+# genera correctamente un archivo .srt desde un audio y lo convierte a JSON.
+# Requiere que FFmpeg esté instalado y disponible en el sistema.
+# 
+# ▶️ Uso:
+# Ejecutar con pytest desde la raíz del proyecto:
+#     pytest tests/test_subtitles_generator.py
+# 
+# Asegúrate de que el audio se genera correctamente con AudioGenerator,
+# ya que esta prueba también verifica que el archivo resultante .srt sea válido.
+# ──────────────────────────────────────────────────────────────
+
 
 import os
 import pytest

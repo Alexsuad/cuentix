@@ -1,49 +1,46 @@
-# core/processors/prompt_builder.py
+# ──────────────────────────────────────────────────────────────────────────────
+# File: core/processors/prompt_builder.py
+# Descripción: Construye un prompt personalizado a partir de los datos enviados
+# desde el frontend, adaptado a los gustos del niño o niña. Este prompt será
+# utilizado por el generador de texto para crear una historia infantil única.
+# ──────────────────────────────────────────────────────────────────────────────
 
-"""
-Este módulo se encarga de construir dinámicamente prompts personalizados 
-a partir de los parámetros que el niño o niña selecciona desde el frontend.
-La salida es una cadena de texto que se combina con el prompt global para 
-generar una historia única y adaptada.
-"""
+# ╭─────────────────────────────── Importaciones ───────────────────────────────╮
+
+from core.validators.campos_requeridos import CAMPOS_REQUERIDOS  # Lista centralizada de campos requeridos
+
+# ╰─────────────────────────────────────────────────────────────────────────────╯
+
+
+# ───────────────────────────── Construcción del Prompt ────────────────────────
 
 def construir_prompt_personalizado(params: dict) -> str:
     """
-    Recibe un diccionario con datos seleccionados por el niño/a y arma un prompt específico.
+    Genera un prompt narrativo infantil usando los datos proporcionados por el usuario.
 
-    Parámetros esperados en el diccionario:
-    - nombre: Nombre del protagonista
-    - edad: Edad del niño
-    - rol: Rol del protagonista (explorador, astronauta, dragón, etc.)
-    - lugar: Escenario donde sucede el cuento
-    - objeto: Objeto mágico o especial
-    - desafio: Desafío o conflicto a resolver
-    - criatura: Personaje mágico o animal secundario
-    - color: Color favorito del niño
-    - final: Tipo de final (feliz, sorpresa, aprendizaje, etc.)
+    Args:
+        params (dict): Diccionario con los campos seleccionados en el frontend.
 
-    Retorna:
-    - prompt (str): Prompt personalizado, listo para combinar con el prompt global.
+    Returns:
+        str: Prompt listo para ser enviado al modelo de IA generativa.
     """
-    # Recuperamos los datos desde el diccionario (usando valores por defecto si faltan)
-    nombre = params.get("nombre", "Tomi")
-    edad = params.get("edad", "5")
-    rol = params.get("rol", "explorador")
-    compañero = params.get("compañero", "un dragón azul")
-    lugar = params.get("lugar", "una isla flotante")
-    objeto = params.get("objeto", "una lupa mágica")
-    desafio = params.get("desafio", "rescatar a un amigo perdido")
-    criatura = params.get("criatura", "un unicornio")
-    color = params.get("color", "verde")
-    final = params.get("final", "feliz")
 
-    # Construimos el prompt personalizado
+    # Obtener valores desde el diccionario con valores por defecto si faltan
+    nombre = params.get("nombre", "Alex")
+    edad = params.get("edad", 5)
+    personaje_principal = params.get("personaje_principal", "un dragón curioso")
+    lugar = params.get("lugar", "el bosque encantado")
+    villano = params.get("villano", "el ogro gruñón")
+    objeto_magico = params.get("objeto_magico", "una brújula brillante")
+    tipo_final = params.get("tipo_final", "feliz")
+
+    # Crear el prompt final usando una estructura narrativa coherente
     prompt = (
-        f"El protagonista es un {rol} llamado {nombre}, que tiene {edad} años. "
-        f"Está acompañado por {compañero} en una aventura en {lugar}. "
-        f"Encuentra un objeto especial: {objeto}. "
-        f"Su misión es {desafio}, enfrentando desafíos con la ayuda de una criatura como {criatura}. "
-        f"El color favorito del protagonista es {color}, y el cuento debe terminar con un final {final}."
+        f"El cuento es para un niño llamado {nombre}, de {edad} años. "
+        f"El personaje principal es {personaje_principal}, que vive una aventura en {lugar}. "
+        f"En el camino se enfrentará al villano {villano}, pero contará con la ayuda de "
+        f"un objeto mágico muy especial: {objeto_magico}. "
+        f"La historia debe terminar con un final {tipo_final}, adaptado a su edad y estilo."
     )
 
     return prompt
